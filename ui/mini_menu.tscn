@@ -1,0 +1,122 @@
+[gd_scene load_steps=6 format=3 uid="uid://p2ena424sd2a"]
+
+[ext_resource type="Script" path="res://scripts/mini_menu.gd" id="1_53omq"]
+[ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_q7dcv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fxsyv"]
+line_spacing = 8.0
+font = ExtResource("2_q7dcv")
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s7h4"]
+bg_color = Color(0.184314, 0.309804, 0.309804, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8djt8"]
+line_spacing = 8.0
+font = ExtResource("2_q7dcv")
+font_size = 20
+
+[node name="MiniMenu" type="Node2D"]
+script = ExtResource("1_53omq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 3
+
+[node name="cmdHeader" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HeaderLabel" type="Label" parent="VBoxContainer/cmdHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "C:\\PERCOM\\MAT_H.dx\\menu> dir"
+label_settings = SubResource("LabelSettings_fxsyv")
+metadata/_edit_lock_ = true
+
+[node name="MenuOptionOne" type="Label" parent="VBoxContainer"]
+z_index = 1
+layout_mode = 2
+text = "<DIR> restart"
+label_settings = SubResource("LabelSettings_fxsyv")
+
+[node name="MO1Highlight" type="Panel" parent="VBoxContainer/MenuOptionOne"]
+unique_name_in_owner = true
+visible = false
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
+
+[node name="MenuOptionTwo" type="Label" parent="VBoxContainer"]
+z_index = 1
+layout_mode = 2
+text = "<DIR> options"
+label_settings = SubResource("LabelSettings_fxsyv")
+
+[node name="MO2Highlight" type="Panel" parent="VBoxContainer/MenuOptionTwo"]
+unique_name_in_owner = true
+visible = false
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
+
+[node name="MenuOptionThree" type="Label" parent="VBoxContainer"]
+z_index = 1
+layout_mode = 2
+text = "<DIR> quit"
+label_settings = SubResource("LabelSettings_fxsyv")
+
+[node name="MO3Highlight" type="Panel" parent="VBoxContainer/MenuOptionThree"]
+unique_name_in_owner = true
+visible = false
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
+
+[node name="cmdFooter" type="HBoxContainer" parent="VBoxContainer"]
+modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="FooterLabel" type="Label" parent="VBoxContainer/cmdFooter"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "C:\\PERCOM\\MAT_H.dx\\menu>"
+label_settings = SubResource("LabelSettings_fxsyv")
+metadata/_edit_lock_ = true
+
+[node name="BlinkingCursor" type="Label" parent="VBoxContainer/cmdFooter"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "█"
+label_settings = SubResource("LabelSettings_8djt8")
+metadata/_edit_lock_ = true
+
+[node name="BlinkingCursorTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="BlinkingCursorTimer" to="." method="_on_blinking_cursor_timer_timeout"]
