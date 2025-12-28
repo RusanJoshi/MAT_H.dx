@@ -19,7 +19,10 @@ var passkey_progress: int = 0
 
 #temp vars for testing
 var temp_rng := RandomNumberGenerator.new() #TODO: Delete later
-var spotlight_cell
+var spotlight_cell # current cell hovered over
+var previous_cell # previous cell hovered over
+var current_x_nav: int
+var current_y_nav: int
 
 func _ready():
 	print("matrix.gd... loaded")
@@ -37,15 +40,14 @@ func _ready():
 func _process(delta):
 	if(has_focus):
 		if(Input.is_action_just_pressed("up_key")):
-			#horizontal_partition_array[temp_rng.randi_range(0, ConfigGame.horizontal_dimension-1)]
+			matrix_navigation(0,-1)
 			spotlight_cell = partitioned_cell_array[temp_rng.randi_range(0, ConfigGame.horizontal_dimension-1)][temp_rng.randi_range(0, ConfigGame.horizontal_dimension-1)]
-			spotlight_cell.cell_hover(true)
 		if(Input.is_action_just_pressed("down_key")):
-			pass
+			matrix_navigation(0,1)
 		if(Input.is_action_just_pressed("left_key")):
-			pass
+			matrix_navigation(-1,0)
 		if(Input.is_action_just_pressed("right_key")):
-			pass
+			matrix_navigation(1,0)
 
 func partition_and_cells_setup():
 	for v_counting in ConfigGame.vertical_dimension:
@@ -143,6 +145,31 @@ func restart():
 	partition_and_cells_setup()
 	passkey_setup()
 	occurrence_count_update()
+
+func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
+	if(navigation_limit_check(pXNav, pYNav)):
+		current_x_nav += pXNav
+		current_y_nav += pYNav
+		
+		previous_cell = spotlight_cell
+		if(previous_cell == null):
+			print("Nothing")
+		else: previous_cell.cell_hover(false)
+		spotlight_cell = partitioned_cell_array[current_y_nav][current_x_nav] # new cell at updated coords
+		spotlight_cell.cell_hover(true)
+
+func navigation_limit_check(pXNav: int = 0, pYNav: int = 0):
+	var x_check: bool = false
+	var y_check: bool = false
+	
+	if(pXNav+current_x_nav >= 0 && pXNav+current_x_nav <= ConfigGame.horizontal_dimension-1):
+		x_check = true
+	if(pYNav+current_y_nav >= 0 && pYNav+current_y_nav <= ConfigGame.vertical_dimension-1):
+		y_check = true
+	
+	if(x_check && y_check):
+		return true
+	else: return false
 
 func test_local(): # ex.) prints outs "0x01passkey_actualA1"
 	
