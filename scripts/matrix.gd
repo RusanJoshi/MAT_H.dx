@@ -39,15 +39,18 @@ func _ready():
 
 func _process(delta):
 	if(has_focus):
+		# Directional Traversal
 		if(Input.is_action_just_pressed("up_key")):
 			matrix_navigation(0,-1)
-			spotlight_cell = partitioned_cell_array[temp_rng.randi_range(0, ConfigGame.horizontal_dimension-1)][temp_rng.randi_range(0, ConfigGame.horizontal_dimension-1)]
 		if(Input.is_action_just_pressed("down_key")):
 			matrix_navigation(0,1)
 		if(Input.is_action_just_pressed("left_key")):
 			matrix_navigation(-1,0)
 		if(Input.is_action_just_pressed("right_key")):
 			matrix_navigation(1,0)
+		
+		if(Input.is_action_just_pressed("spacebar_key")):
+			parity_check(spotlight_cell.segcode_actual)
 
 func partition_and_cells_setup():
 	for v_counting in ConfigGame.vertical_dimension:
