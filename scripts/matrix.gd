@@ -1,6 +1,6 @@
 extends Node2D
-#Notes:
-# vertical_dimension == horizontal_partition_array.size()
+
+
 @onready var vpasp: VariablePitchAudioStreamPlayer = $VPASP
 @onready var left_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/LeftShellPanel/LeftShellVBox
 @onready var inside_v_box: VBoxContainer = %InsideVBox
@@ -17,10 +17,11 @@ var passkey_actual: String = ""
 const PASSKEY_ACTUAL_SIZE: int = 5
 var passkey_progress: int = 0
 
-#temp vars for testing
-var temp_rng := RandomNumberGenerator.new() #TODO: Delete later
+#navigation
 var spotlight_cell # current cell hovered over
 var previous_cell # previous cell hovered over
+var trailing_cell_0
+var trailing_cell_1
 var current_x_nav: int
 var current_y_nav: int
 
@@ -148,6 +149,11 @@ func restart():
 	partition_and_cells_setup()
 	passkey_setup()
 	occurrence_count_update()
+	
+	current_x_nav = 0
+	current_y_nav = 0
+	spotlight_cell = partitioned_cell_array[current_x_nav][current_y_nav]
+	spotlight_cell.cell_hover(true)
 
 func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 	if(navigation_limit_check(pXNav, pYNav)):

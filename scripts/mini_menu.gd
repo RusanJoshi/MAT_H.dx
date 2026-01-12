@@ -31,9 +31,14 @@ func _ready() -> void:
 
 func _process(delta):
 	if(has_focus):
-		if(Input.is_action_just_pressed("r_key")):
-			print("\nRestarting...")
-			Events.restart_game.emit()
+		if(Input.is_action_just_pressed("spacebar_key")):
+			if(menu_list_location_int == 0):
+				print("\nRestarting...")
+				Events.restart_game.emit()
+			elif(menu_list_location_int == 1):
+				print("\nOptions...")
+			elif(menu_list_location_int == 2):
+				print("\nQuit...")
 		if(Input.is_action_just_pressed("up_key")):
 			if(menu_list_location_int-1 >= location_min_range):
 				menu_list_location_int -= 1

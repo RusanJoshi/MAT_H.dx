@@ -64,6 +64,12 @@ func cell_hover(pHover: bool):
 		default_cell_stylebox.bg_color = Color.BLACK
 		default_label_settings.set_font_size(default_font_size)
 
+func cell_trail_0():
+	pass
+
+func cell_trail_1():
+	pass
+
 func _on_area_2d_mouse_entered() -> void:
 	#vpasp.stream = SoundLibrary.keypress_directional[randi_range(0,8)]
 	#vpasp.play()
