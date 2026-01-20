@@ -2,16 +2,18 @@ extends Control
 
 @onready var panel: Panel = %Panel
 @onready var label: Label = %Label
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var default_cell_stylebox = StyleBoxFlat.new()
 var default_label_settings = LabelSettings.new()
 
 var passkey_letters_hex = "ABCDEF"
 var passkey_numbers = "0123456789"
 
+func _process(delta: float) -> void:
+	if(Input.is_action_just_pressed("r_key")):
+		animation_player.play("flash")
 
 func _ready():
-	default_cell_stylebox.bg_color = Color.BLACK
 	default_label_settings.set_font(preload("res://fonts/Perfect DOS VGA 437 Win.ttf"))
 	default_label_settings.set_font_size(20)
 	panel.set_anchors_preset(PRESET_FULL_RECT)
@@ -20,7 +22,7 @@ func _ready():
 
 
 func setup():
-	panel.add_theme_stylebox_override("panel", default_cell_stylebox)
+	#panel.add_theme_stylebox_override("panel", default_cell_stylebox)
 	memory_address_setup()
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -31,3 +33,8 @@ func memory_address_setup(pText: String = "0x-->", pBool: bool = false):
 		label.text = "0x0" + pText + ">"
 	else:
 		label.text = "0x-->"
+
+func count_change_flash():
+	#The plan is to have the occurance counts flash sequentially.
+	#Flash the color and increase the font and decrease the font. Like it's raising upwards. 
+	animation_player.play("flash")

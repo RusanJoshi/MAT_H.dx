@@ -58,7 +58,7 @@ func cell_hover(pHover: bool):
 	if(pHover):
 		vpasp.stream = SoundLibrary.keypress_directional[randi_range(0,8)]
 		vpasp.play()
-		default_cell_stylebox.bg_color = Color.DARK_SLATE_GRAY
+		default_cell_stylebox.bg_color = ConfigGame.main_highlight_color
 		default_label_settings.set_font_size(hover_font_size)
 	else:
 		default_cell_stylebox.bg_color = Color.BLACK

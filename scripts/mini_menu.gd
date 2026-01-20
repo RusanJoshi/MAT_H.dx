@@ -52,6 +52,9 @@ func _process(delta):
 				menu_highlights_array[menu_list_location_int].visible = true
 				footer_label.text = menu_list_array[menu_list_location_int]
 
+func change_highlight_color():
+	
+	pass
 
 func _on_blinking_cursor_timer_timeout() -> void:
 	if(blinking_cursor.is_visible_in_tree()):
