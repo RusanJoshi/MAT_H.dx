@@ -5,6 +5,7 @@ extends Node2D
 @onready var left_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/LeftShellPanel/LeftShellVBox
 @onready var inside_v_box: VBoxContainer = %InsideVBox
 @onready var right_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/RightShellPanel/RightShellVBox
+@onready var flash_timer: Timer = $FlashTimer
 
 var occurrence_count_array: Array[Control] # holds occurrence_count objects
 var horizontal_partition_array: Array[HBoxContainer] # holds horizontal_partitions (HBoxContainers)
@@ -24,6 +25,9 @@ var trailing_cell_0
 var trailing_cell_1
 var current_x_nav: int
 var current_y_nav: int
+
+#misc
+var index_count_hold: int
 
 func _ready():
 	print("matrix.gd... loaded")
@@ -119,8 +123,12 @@ func parity_check(pSegCode: String):
 		progress_passkey(pSegCode)
 		test_local()
 		occurrence_count_update()
+		occurrence_count_array[0].correct_flash() # All of them flash. I don't know why.
 	else:
 		print("no match")
+		occurrence_count_array[0].incorrect_flash()
+		vpasp.stream = SoundLibrary.incorrect_choice
+		vpasp.play()
 		Events.progress_detection_meter.emit()
 
 func progress_passkey(pSegCode: String):

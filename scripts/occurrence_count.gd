@@ -11,7 +11,7 @@ var passkey_numbers = "0123456789"
 
 func _process(delta: float) -> void:
 	if(Input.is_action_just_pressed("r_key")):
-		animation_player.play("flash")
+		animation_player.play("incorrect_flash")
 
 func _ready():
 	default_label_settings.set_font(preload("res://fonts/Perfect DOS VGA 437 Win.ttf"))
@@ -34,7 +34,9 @@ func memory_address_setup(pText: String = "0x-->", pBool: bool = false):
 	else:
 		label.text = "0x-->"
 
-func count_change_flash():
-	#The plan is to have the occurance counts flash sequentially.
-	#Flash the color and increase the font and decrease the font. Like it's raising upwards. 
-	animation_player.play("flash")
+func correct_flash(): 
+	animation_player.play("correct_flash")
+
+func incorrect_flash():
+	animation_player.play("incorrect_flash")
+	

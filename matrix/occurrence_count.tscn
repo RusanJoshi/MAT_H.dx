@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dhvuyph61wxh1"]
+[gd_scene load_steps=7 format=3 uid="uid://dhvuyph61wxh1"]
 
 [ext_resource type="Script" path="res://scripts/occurrence_count.gd" id="1_7ujk3"]
 
@@ -21,8 +21,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_78ck1"]
-resource_name = "flash"
-length = 0.5
+resource_name = "correct_flash"
+length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -30,16 +30,33 @@ tracks/0/path = NodePath("Panel:theme_override_styles/panel:bg_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.233333, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 1), Color(0.536422, 0.41284, 0, 1), Color(0, 0, 0, 1)]
+"values": [Color(0, 0, 0, 1), Color(0.239216, 0.501961, 0.360784, 1), Color(0, 0, 0, 1), Color(0.239216, 0.501961, 0.360784, 1), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2h2pj"]
+resource_name = "incorrect_flash"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.736497, 0.243272, 0.268965, 1), Color(0, 0, 0, 1), Color(0.736497, 0.243272, 0.268965, 1), Color(0, 0, 0, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1mbif"]
 _data = {
 "RESET": SubResource("Animation_v14cq"),
-"flash": SubResource("Animation_78ck1")
+"correct_flash": SubResource("Animation_78ck1"),
+"incorrect_flash": SubResource("Animation_2h2pj")
 }
 
 [node name="OccurrenceCount" type="Control"]

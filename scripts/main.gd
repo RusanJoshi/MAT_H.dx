@@ -20,13 +20,14 @@ var datetime_dict = Time.get_datetime_dict_from_system()
 func _ready():
 	print("main.gd... loaded")
 	update_focus()
-	date_and_time.text = "Boot: " + str(datetime_dict.month) + ", " + str(datetime_dict.year)
+	date_and_time.text = "Boot: " + str(datetime_dict.month) + "/" + str(datetime_dict.day) + "/" + str(datetime_dict.year)
 
 func _process(delta):
 	if(Input.is_action_just_pressed("tab_key")): #switches focus between the matrix and mini-menu
 		update_focus()
 
 func update_focus():
+	animation_player.play("FocusDimming")
 	focus_boolean = !focus_boolean
 	
 	if(!focus_boolean):
