@@ -16,9 +16,12 @@ var passkey_letters_hex = "ABCDEF"
 var passkey_numbers = "0123456789"
 var default_font_size: int = 20
 var hover_font_size: int = 22
+var cell_locked: bool = false
 
 
 func _ready():
+	Events.lose_event.connect(lock_cell)
+	
 	default_cell_stylebox.bg_color = Color.BLACK
 	default_label_settings.set_font(preload("res://fonts/Perfect DOS VGA 437 Win.ttf"))
 	default_label_settings.set_font_size(default_font_size)
@@ -26,7 +29,6 @@ func _ready():
 	cell_panel.size = Vector2(0,0)
 	setup()
 	cell_panel.resized.connect(update_collision_shape_size_and_position)
-
 
 func setup():
 	cell_panel.add_theme_stylebox_override("panel", default_cell_stylebox)
@@ -64,6 +66,13 @@ func cell_hover(pHover: bool):
 		default_cell_stylebox.bg_color = Color.BLACK
 		default_label_settings.set_font_size(default_font_size)
 
+func lock_cell():
+	cell_locked = true
+	cell_hover(false)
+
+func unlock_cell():
+	cell_locked = false
+
 func cell_trail_0():
 	pass
 
@@ -71,22 +80,18 @@ func cell_trail_1():
 	pass
 
 func _on_area_2d_mouse_entered() -> void:
-	#vpasp.stream = SoundLibrary.keypress_directional[randi_range(0,8)]
-	#vpasp.play()
-	#default_cell_stylebox.bg_color = Color.DARK_SLATE_GRAY
-	#default_label_settings.set_font_size(hover_font_size)
-	cell_hover(true)
+	if(!cell_locked):
+		cell_hover(true)
 
 func _on_area_2d_mouse_exited() -> void:
-	#default_cell_stylebox.bg_color = Color.BLACK
-	#default_label_settings.set_font_size(default_font_size)
-	cell_hover(false)
-
+	if(!cell_locked):
+		cell_hover(false)
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
-				vpasp.play()
-				Events.cell_clicked.emit(segcode_actual)
+	if(!cell_locked):
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
+					vpasp.play()
+					Events.cell_clicked.emit(segcode_actual)

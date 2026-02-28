@@ -10,4 +10,5 @@ signal cipher_ready_to_receive_passkey_actual # Emitted when the cipher scene is
 signal progress_detection_meter
 signal occurrence_count_update_flash
 signal victory_event
-signal restart_game
+signal restart_game #listened by matrix.gd
+signal lose_event

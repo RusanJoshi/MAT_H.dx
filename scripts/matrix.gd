@@ -25,6 +25,7 @@ var trailing_cell_0
 var trailing_cell_1
 var current_x_nav: int
 var current_y_nav: int
+var game_lost: bool = false
 
 #misc
 var index_count_hold: int
@@ -35,15 +36,17 @@ func _ready():
 	Events.cipher_ready_to_receive_passkey_actual.connect(send_passkey_actual_to_cipher)
 	Events.victory_event.connect(player_victory)
 	Events.restart_game.connect(restart)
+	Events.lose_event.connect(player_lose)
 	
 	partition_and_cells_setup()
 	passkey_setup()
 	occurrence_count_setup()
 	occurrence_count_update()
 	right_shell_setup()
+	matrix_navigation(0,0) #Setting focus on the first matrix cell(0,0)
 
 func _process(delta):
-	if(has_focus):
+	if(has_focus and !game_lost):
 		# Directional Traversal
 		if(Input.is_action_just_pressed("up_key")):
 			matrix_navigation(0,-1)
@@ -162,6 +165,10 @@ func restart():
 	current_y_nav = 0
 	spotlight_cell = partitioned_cell_array[current_x_nav][current_y_nav]
 	spotlight_cell.cell_hover(true)
+	game_lost = false
+
+func player_lose():
+	game_lost = true
 
 func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 	if(navigation_limit_check(pXNav, pYNav)):

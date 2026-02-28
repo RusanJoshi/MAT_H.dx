@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://p2ena424sd2a"]
+[gd_scene load_steps=9 format=3 uid="uid://p2ena424sd2a"]
 
 [ext_resource type="Script" path="res://scripts/mini_menu.gd" id="1_53omq"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_q7dcv"]
@@ -14,6 +14,15 @@ font_size = 20
 line_spacing = 8.0
 font = ExtResource("2_q7dcv")
 font_size = 20
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q46ov"]
+size = Vector2(300, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8crha"]
+size = Vector2(300, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2bxc"]
+size = Vector2(300, 20)
 
 [node name="MiniMenu" type="Node2D"]
 script = ExtResource("1_53omq")
@@ -118,4 +127,32 @@ metadata/_edit_lock_ = true
 [node name="BlinkingCursorTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="RestartArea2D" type="Area2D" parent="."]
+position = Vector2(150, 33)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestartArea2D"]
+shape = SubResource("RectangleShape2D_q46ov")
+metadata/_edit_lock_ = true
+
+[node name="OptionArea2D2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OptionArea2D2"]
+position = Vector2(150, 57)
+shape = SubResource("RectangleShape2D_8crha")
+
+[node name="QuitArea2D3" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="QuitArea2D3"]
+position = Vector2(150, 81)
+shape = SubResource("RectangleShape2D_f2bxc")
+
 [connection signal="timeout" from="BlinkingCursorTimer" to="." method="_on_blinking_cursor_timer_timeout"]
+[connection signal="input_event" from="RestartArea2D" to="." method="_on_restart_area_2d_input_event"]
+[connection signal="mouse_entered" from="RestartArea2D" to="." method="_on_restart_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="RestartArea2D" to="." method="_on_restart_area_2d_mouse_exited"]
+[connection signal="input_event" from="OptionArea2D2" to="." method="_on_option_area_2d_2_input_event"]
+[connection signal="mouse_entered" from="OptionArea2D2" to="." method="_on_option_area_2d_2_mouse_entered"]
+[connection signal="mouse_exited" from="OptionArea2D2" to="." method="_on_option_area_2d_2_mouse_exited"]
+[connection signal="input_event" from="QuitArea2D3" to="." method="_on_quit_area_2d_3_input_event"]
+[connection signal="mouse_entered" from="QuitArea2D3" to="." method="_on_quit_area_2d_3_mouse_entered"]
+[connection signal="mouse_exited" from="QuitArea2D3" to="." method="_on_quit_area_2d_3_mouse_exited"]

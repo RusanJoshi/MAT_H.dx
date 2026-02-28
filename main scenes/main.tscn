@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d0gxlfujkretg"]
+[gd_scene load_steps=18 format=3 uid="uid://d0gxlfujkretg"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dpgo0"]
 [ext_resource type="PackedScene" uid="uid://xj0nw4jduvxk" path="res://cipher/cipher.tscn" id="2_a8dqe"]
@@ -88,6 +88,12 @@ _data = {
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a03l3"]
 bg_color = Color(0.392157, 0.254902, 0.137255, 0.156863)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1io8"]
+size = Vector2(499.5, 422.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnjs"]
+size = Vector2(498, 164)
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_dpgo0")
 
@@ -168,4 +174,23 @@ offset_bottom = 400.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a03l3")
 
+[node name="MatrixArea2D" type="Area2D" parent="."]
+position = Vector2(225, 233)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MatrixArea2D"]
+position = Vector2(25.25, 10)
+shape = SubResource("RectangleShape2D_r1io8")
+metadata/_edit_lock_ = true
+
+[node name="MiniMenuArea2D" type="Area2D" parent="."]
+position = Vector2(76, 543)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniMenuArea2D"]
+position = Vector2(173, 72)
+shape = SubResource("RectangleShape2D_4jnjs")
+debug_color = Color(0.812343, 0.376517, 0.436461, 0.42)
+metadata/_edit_lock_ = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="mouse_entered" from="MatrixArea2D" to="." method="_on_matrix_area_2d_mouse_entered"]
+[connection signal="mouse_entered" from="MiniMenuArea2D" to="." method="_on_mini_menu_area_2d_mouse_entered"]

@@ -58,7 +58,9 @@ func progress_detection_meter():
 		if(detection_count == 0): cumulative_detection_visual += "X"
 		else: cumulative_detection_visual += "-X"
 		detection_count += 1
-		print(detection_count)
+	
+	if(detection_count == 5):
+		lose_state()
 	
 	# update visual
 	detection_right_label.text = "[" + cumulative_detection_visual
@@ -87,3 +89,8 @@ func restart():
 	detection_right_label.text = "[- - - - -]"
 	
 	Events.cipher_ready_to_receive_passkey_actual.emit()
+
+func lose_state():
+	print("LOSE STATE.")
+	Events.lose_event.emit()
+	

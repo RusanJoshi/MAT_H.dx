@@ -2,15 +2,14 @@ Sounds:
 Freesound, freesound.org-
 * Compter Keyboard Pack by MattRuthSound, https://freesound.org/people/MattRuthSound/packs/31534/
 * Single clicks Keyboard Sound by StrikeWhistler, https://freesound.org/people/StrikeWhistler/sounds/580786/
-* [*] Ultimate UI SFX Pack by JDSherbert, https://jdsherbert.itch.io/ultimate-ui-sfx-pack
+* Ultimate UI SFX Pack by JDSherbert, https://jdsherbert.itch.io/ultimate-ui-sfx-pack
+* Level Up/Mission Complete 1 (Cyberpunk).wav by SilverIllusionist, https://freesound.org/people/SilverIllusionist/sounds/660871/
+* Level Up/Mission Complete (Cyberpunk Vibe) 2 by SilverIllusionist, https://freesound.org/people/SilverIllusionist/sounds/661240/
 * [X] Hard-drive spin-up/spin-down by SamsterBirdies, https://freesound.org/people/SamsterBirdies/sounds/567609/
-* [X] Level Up/Mission Complete 1 (Cyberpunk).wav by SilverIllusionist, https://freesound.org/people/SilverIllusionist/sounds/660871/
-* [X] Level Up/Mission Complete (Cyberpunk Vibe) 2 by SilverIllusionist, https://freesound.org/people/SilverIllusionist/sounds/661240/
 * 
 
 Fonts:
 * DS Terminal by Dusit Supasawat, https://www.dafont.com/ds-terminal.font
-*
 
 Tutorials:
 * "Making a CRT Shader Effect - Using Godot Engine" by DevPoodle, https://www.youtube.com/watch?v=E401x98N6iA
@@ -18,6 +17,7 @@ Tutorials:
 
 ___________________________________________________________________
 todo -
+keypress confirmation (spacebar)
 variable pitch audio component
 key click audio
 
