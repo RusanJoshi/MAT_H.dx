@@ -20,6 +20,7 @@ var cell_locked: bool = false
 
 
 func _ready():
+	Events.victory_event.connect(lock_cell)
 	Events.lose_event.connect(lock_cell)
 	
 	default_cell_stylebox.bg_color = Color.BLACK

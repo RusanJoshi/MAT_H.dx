@@ -166,7 +166,7 @@ wait_time = 5.0
 autostart = true
 
 [node name="MiniMenu" parent="." instance=ExtResource("7_lyyxq")]
-position = Vector2(12, 560)
+position = Vector2(12, 550)
 
 [node name="FocusHighlightBackground" type="Panel" parent="."]
 offset_right = 500.0

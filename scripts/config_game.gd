@@ -12,7 +12,13 @@ var vertical_dimension = 5
 var horizontal_dimension = 5
 var password_length = 5 # I don't think this is used anywhere meaningfully.
 
+var crt_shader_bool: bool = true
 var main_highlight_color: Color = Color.DARK_SLATE_GRAY
+
+# Toggle CRT shader/ adjust intensity
+# Adjust game volume
+# Adjust difficulty (matrix dimensions) (maybe input custom dimensions?)
+# Toggle detection meter
 
 func _ready() -> void:
 	print("config.gd... loaded")

@@ -25,10 +25,13 @@ var trailing_cell_0
 var trailing_cell_1
 var current_x_nav: int
 var current_y_nav: int
-var game_lost: bool = false
 
 #misc
+var game_won: bool = false
+var game_lost: bool = false
+var game_ended: bool = false
 var index_count_hold: int
+
 
 func _ready():
 	print("matrix.gd... loaded")
@@ -46,7 +49,7 @@ func _ready():
 	matrix_navigation(0,0) #Setting focus on the first matrix cell(0,0)
 
 func _process(delta):
-	if(has_focus and !game_lost):
+	if(has_focus and !game_ended):
 		# Directional Traversal
 		if(Input.is_action_just_pressed("up_key")):
 			matrix_navigation(0,-1)
@@ -144,7 +147,9 @@ func send_passkey_actual_to_cipher():
 	Events.update_cipher_repeating_indicator.emit(passkey_actual)
 
 func player_victory():
-	print("Congratulations, bitch.")
+	game_won = true
+	game_ended = true
+	#TODO: And then do some animation>>
 
 func restart():
 	print("Matrix restarting...")
@@ -165,10 +170,15 @@ func restart():
 	current_y_nav = 0
 	spotlight_cell = partitioned_cell_array[current_x_nav][current_y_nav]
 	spotlight_cell.cell_hover(true)
+	
+	game_won = false
 	game_lost = false
+	game_ended = false
 
 func player_lose():
 	game_lost = true
+	game_ended = true
+	#TODO: And then do some animation>>
 
 func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 	if(navigation_limit_check(pXNav, pYNav)):

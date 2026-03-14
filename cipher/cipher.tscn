@@ -126,10 +126,3 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "[- - - - -]"
 label_settings = SubResource("LabelSettings_ys6tu")
-
-[node name="DebugPasskeyProgressCount" type="Label" parent="."]
-visible = false
-offset_top = 66.0
-offset_right = 196.0
-offset_bottom = 89.0
-text = "[debug] passkey progress count: -"

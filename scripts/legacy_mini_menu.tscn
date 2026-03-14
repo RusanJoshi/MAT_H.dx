@@ -40,7 +40,7 @@ mouse_filter = 2
 [node name="HeaderLabel" type="Label" parent="VBoxContainer/cmdHeader"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "C:\\PERCOM\\MAT_H.dx"
+text = "C:\\PERCOM\\MAT_H.dx\\menu> dir"
 label_settings = SubResource("LabelSettings_fxsyv")
 metadata/_edit_lock_ = true
 
@@ -133,7 +133,7 @@ mouse_filter = 2
 [node name="FooterLabel" type="Label" parent="VBoxContainer/cmdFooter"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "C:\\PERCOM\\MAT_H.dx"
+text = "C:\\PERCOM\\MAT_H.dx\\menu>"
 label_settings = SubResource("LabelSettings_fxsyv")
 metadata/_edit_lock_ = true
 
