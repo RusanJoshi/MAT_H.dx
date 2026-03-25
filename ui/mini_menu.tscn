@@ -48,7 +48,7 @@ metadata/_edit_lock_ = true
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> extras"
+text = "<DIR> moption_one"
 label_settings = SubResource("LabelSettings_fxsyv")
 
 [node name="MO1Highlight" type="Panel" parent="VBoxContainer/MenuOptionOneLabel"]
@@ -69,7 +69,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> options"
+text = "<DIR> moption_two"
 label_settings = SubResource("LabelSettings_fxsyv")
 
 [node name="MO2Highlight" type="Panel" parent="VBoxContainer/MenuOptionTwoLabel"]
@@ -90,7 +90,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> restart"
+text = "<DIR> moption_three"
 label_settings = SubResource("LabelSettings_fxsyv")
 
 [node name="MO3Highlight" type="Panel" parent="VBoxContainer/MenuOptionThreeLabel"]
@@ -111,7 +111,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> quit"
+text = "<DIR> moption_four"
 label_settings = SubResource("LabelSettings_fxsyv")
 
 [node name="MO4Highlight" type="Panel" parent="VBoxContainer/MenuOptionFourLabel"]
@@ -175,6 +175,12 @@ shape = SubResource("RectangleShape2D_f2bxc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionFourArea2D2"]
 position = Vector2(150, 105)
 shape = SubResource("RectangleShape2D_f2bxc")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = 78.0
+offset_top = -32.0
+offset_right = 118.0
+offset_bottom = -9.0
 
 [connection signal="timeout" from="BlinkingCursorTimer" to="." method="_on_blinking_cursor_timer_timeout"]
 [connection signal="input_event" from="MenuOptionOneArea2D" to="." method="_on_menu_option_one_input_event"]

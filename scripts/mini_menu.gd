@@ -4,6 +4,7 @@ extends Node2D
 @onready var cmd_footer: HBoxContainer = $VBoxContainer/cmdFooter
 @onready var header_label: Label = %HeaderLabel
 @onready var footer_label: Label = %FooterLabel
+@onready var debug_label: Label = $DebugLabel
 
 @onready var blinking_cursor: Label = %BlinkingCursor
 @onready var blinking_cursor_timer: Timer = $BlinkingCursorTimer
@@ -33,8 +34,10 @@ var dir_path_end: String = "> "
 var dir_path_link: String = "\\"
 var moption_dir: String = "<DIR> "
 var current_dir_path: String = ""
-var current_dir_min: int = 0 # I believe this will always be zero
-var current_dir_max: int = 0 # This one changes
+var current_dir_x_min: int = 0
+var current_dir_x_max: int = 0
+var current_dir_y_min: int = 0 # I believe this will always be zero
+var current_dir_y_max: int = 0 # This one changes
 
 var menu_highlights_array: Array[Panel]
 
@@ -46,33 +49,24 @@ func _ready() -> void:
 	
 	current_dir_path = dir_path_const
 	header_label.text = current_dir_path + dir_path_end + "dir"
-	current_dir_max = directory_array[directory_int_x].size()-1
+	current_dir_x_max = directory_array.size()-1
+	current_dir_y_max = directory_array[directory_int_x].size()-1
+	enter_dir()
 
-func _process(delta): #SHIN
+func _process(delta):
 	if(has_focus):
-		if(Input.is_action_just_pressed("right_key")):
-			if(directory_int_x == 0 && directory_int_y == 0):
-				extras_moption_target()
-			elif(directory_int_x == 0 && directory_int_y == 1):
-				options_moption_target()
-			elif(directory_int_x == 0 && directory_int_y == 2):
-				restart_moption_target()
-				Events.restart_game.emit()
-			elif(directory_int_x == 0 && directory_int_y == 3):
-				quit_moption_target()
 		if(Input.is_action_just_pressed("up_key")):
-			if(directory_int_y-1 >= current_dir_min):
-				directory_int_y -= 1
-				menu_highlights_array[directory_int_y+1].visible = false
-				menu_highlights_array[directory_int_y].visible = true
-				footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+			if(directory_int_y-1 >= current_dir_y_min):
+				menu_traversal(0)
 		if(Input.is_action_just_pressed("down_key")):
-			if(directory_int_y+1 <= current_dir_max):
-				directory_int_y += 1
-				menu_highlights_array[directory_int_y-1].visible = false
-				menu_highlights_array[directory_int_y].visible = true
-				footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
-
+			if(directory_int_y+1 <= current_dir_y_max):
+				menu_traversal(1)
+		if(Input.is_action_just_pressed("left_key")):
+			if(directory_int_x-1 >= current_dir_x_min):
+				menu_traversal(2)
+		if(Input.is_action_just_pressed("right_key")):
+			if(directory_int_x+1 <= current_dir_y_max):
+				menu_traversal(3)
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
@@ -82,6 +76,55 @@ func remove_menu_highlights(): # (?)I don't know why, but this executes once bef
 	menu_highlights_array[directory_int_y].visible = false
 	footer_label.text = current_dir_path + dir_path_end
 	directory_int_y = 0
+
+func menu_traversal(pDirection: int = 0):
+	#directions 0 = up, 1 = down, 2 = left, 3 = right
+	var horizontal_movement: bool = false
+	
+	if(pDirection == 0): #UP
+		directory_int_y -= 1
+		menu_highlights_array[directory_int_y+1].visible = false
+		menu_highlights_array[directory_int_y].visible = true
+	elif(pDirection == 1): #DOWN
+		directory_int_y += 1
+		menu_highlights_array[directory_int_y-1].visible = false
+		menu_highlights_array[directory_int_y].visible = true
+	elif(pDirection == 2): #LEFT
+		horizontal_movement = true
+		directory_int_x -= 1
+	elif(pDirection == 3): #RIGHT
+		horizontal_movement = true
+		directory_int_x += 1
+	
+	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
+	
+	if(horizontal_movement):
+		if(directory_int_x == 0):
+			print("di: " + str(directory_int_x))
+			if(directory_int_y == 0):
+				extras_moption_target()
+			elif(directory_int_y == 1):
+				options_moption_target()
+			elif(directory_int_y == 2):
+				restart_moption_target()
+				Events.restart_game.emit()
+			elif(directory_int_y == 3):
+				quit_moption_target()
+		elif(directory_int_x == 1):
+			print("di: " + str(directory_int_x))
+			if(directory_int_y == 0):
+				print("flag 1")
+				pass
+			elif(directory_int_y == 1):
+				print("flag 2")
+				pass
+			elif(directory_int_y == 2):
+				print("flag 3")
+				pass
+			elif(directory_int_y == 3):
+				print("flag 4")
+				pass
 
 func cd_into_dir_visual_text(pMenuOption:String):
 	var cd_dir_vis: String
