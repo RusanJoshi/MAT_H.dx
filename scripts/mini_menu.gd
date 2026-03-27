@@ -65,7 +65,7 @@ func _process(delta):
 			if(directory_int_x-1 >= current_dir_x_min):
 				menu_traversal(2)
 		if(Input.is_action_just_pressed("right_key")):
-			if(directory_int_x+1 <= current_dir_y_max):
+			if(directory_int_x+1 <= current_dir_x_max):
 				menu_traversal(3)
 
 func on_first_focus():
@@ -78,8 +78,11 @@ func remove_menu_highlights(): # (?)I don't know why, but this executes once bef
 	directory_int_y = 0
 
 func menu_traversal(pDirection: int = 0):
-	#directions 0 = up, 1 = down, 2 = left, 3 = right
+	#directions: (0 = up), (1 = down), (2 = left), (3 = right)
 	var horizontal_movement: bool = false
+	var forward: bool = false
+	var previous: bool = false
+	var horizontal_direction: int = 0
 	
 	if(pDirection == 0): #UP
 		directory_int_y -= 1
@@ -91,40 +94,46 @@ func menu_traversal(pDirection: int = 0):
 		menu_highlights_array[directory_int_y].visible = true
 	elif(pDirection == 2): #LEFT
 		horizontal_movement = true
-		directory_int_x -= 1
 	elif(pDirection == 3): #RIGHT
 		horizontal_movement = true
-		directory_int_x += 1
+		forward = true
+		
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
 	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
 	
 	if(horizontal_movement):
-		if(directory_int_x == 0):
-			print("di: " + str(directory_int_x))
-			if(directory_int_y == 0):
-				extras_moption_target()
-			elif(directory_int_y == 1):
-				options_moption_target()
-			elif(directory_int_y == 2):
-				restart_moption_target()
-				Events.restart_game.emit()
-			elif(directory_int_y == 3):
-				quit_moption_target()
-		elif(directory_int_x == 1):
-			print("di: " + str(directory_int_x))
-			if(directory_int_y == 0):
-				print("flag 1")
-				pass
-			elif(directory_int_y == 1):
-				print("flag 2")
-				pass
-			elif(directory_int_y == 2):
-				print("flag 3")
-				pass
-			elif(directory_int_y == 3):
-				print("flag 4")
-				pass
+		if(forward):
+			if(directory_int_x == 0):
+				print("di: " + str(directory_int_x))
+				if(directory_int_y == 0):
+					extras_moption_target()
+				elif(directory_int_y == 1):
+					options_moption_target()
+				elif(directory_int_y == 2):
+					restart_moption_target()
+					Events.restart_game.emit()
+				elif(directory_int_y == 3):
+					quit_moption_target()
+			elif(directory_int_x == 1):
+				print("di: " + str(directory_int_x))
+				if(directory_int_y == 0):
+					delete_moption_target()
+				elif(directory_int_y == 1):
+					customize_moption_target()
+				elif(directory_int_y == 2):
+					unlocks_moption_target()
+				elif(directory_int_y == 3):
+					secrets_moption_target()
+		else: 
+			if(directory_int_x-1 < 0):
+				print("Can't go further back.")
+			else:
+				directory_int_x -= 1
+				enter_dir(directory_int_x)
+	
+	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
 
 func cd_into_dir_visual_text(pMenuOption:String):
 	var cd_dir_vis: String
@@ -143,9 +152,6 @@ func enter_dir(pDirX: int = 0): #Changes the menu options, the parameter sounds 
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][0])
 
-func exit_dir():
-	pass
-
 func extras_moption_target():
 	print("\nExtras...")
 	enter_dir(1)
@@ -160,6 +166,18 @@ func options_moption_target():
 func quit_moption_target():
 	print("\nQuit...")
 	get_tree().quit()
+
+func delete_moption_target():
+	print("\nInvalid...")
+
+func customize_moption_target():
+	print("\nCustomize...")
+
+func unlocks_moption_target():
+	print("\nUnlocks...")
+
+func secrets_moption_target():
+	print("\nSecrets...")
 
 func _on_blinking_cursor_timer_timeout() -> void:
 	if(blinking_cursor.is_visible_in_tree()):
