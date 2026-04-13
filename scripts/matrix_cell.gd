@@ -74,6 +74,10 @@ func lock_cell():
 func unlock_cell():
 	cell_locked = false
 
+func play_click_sound():
+	vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
+	vpasp.play()
+
 func cell_trail_0():
 	pass
 
@@ -93,6 +97,5 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if event.pressed:
-					vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
-					vpasp.play()
+					play_click_sound()
 					Events.cell_clicked.emit(segcode_actual)

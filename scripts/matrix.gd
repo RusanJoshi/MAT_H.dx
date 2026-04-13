@@ -122,6 +122,7 @@ func matrix_cell_clicked(pSegCode: String):
 	parity_check(pSegCode)
 
 func parity_check(pSegCode: String):
+	spotlight_cell.play_click_sound()
 	if(pSegCode[0] == passkey_actual[passkey_progress] or pSegCode[1] == passkey_actual[passkey_progress]):
 		print(pSegCode + " = " + passkey_actual[passkey_progress])
 		vpasp.stream = SoundLibrary.particle_jingle[randi_range(0,6)]

@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var vpasp: VariablePitchAudioStreamPlayer = $VPASP
 @onready var cmd_header: HBoxContainer = $VBoxContainer/cmdHeader
 @onready var cmd_footer: HBoxContainer = $VBoxContainer/cmdFooter
 @onready var header_label: Label = %HeaderLabel
@@ -23,6 +24,7 @@ extends Node2D
 var default_visible_wait_time: float = 1.5
 
 var directory_int_x: int = 0
+var previous_int_x: int = 0
 var directory_int_y: int = 0
 
 var directory_menu: Array[String] = ["extras", "options", "restart", "quit"] #menu
@@ -33,13 +35,37 @@ var dir_path_const: String = "C:\\PERCOM\\MAT_H.dx\\menu"
 var dir_path_end: String = "> "
 var dir_path_link: String = "\\"
 var moption_dir: String = "<DIR> "
+var moption_con: String = "<CON>"
 var current_dir_path: String = ""
 var current_dir_x_min: int = 0
 var current_dir_x_max: int = 0
 var current_dir_y_min: int = 0 # I believe this will always be zero
 var current_dir_y_max: int = 0 # This one changes
-
 var menu_highlights_array: Array[Panel]
+
+var menu_moption_functions: Array[Callable] = [
+	extras_moption_target,
+	options_moption_target,
+	restart_moption_target,
+	quit_moption_target
+]
+var extras_moption_functions: Array[Callable] = [
+	deleted_moption_target,
+	customize_moption_target,
+	unlocks_moption_target,
+	secrets_moption_target
+]
+var options_moption_functions: Array[Callable] = [
+	volume_moption_target,
+	difficulty_moption_target,
+	detection_meter_moption_target,
+	crt_effect_moption_target
+]
+var moption_functions_array: Array[Array] = [
+	menu_moption_functions,
+	extras_moption_functions,
+	options_moption_functions
+]
 
 
 func _ready() -> void:
@@ -67,6 +93,8 @@ func _process(delta):
 		if(Input.is_action_just_pressed("right_key")):
 			if(directory_int_x+1 <= current_dir_x_max):
 				menu_traversal(3)
+	if(Input.is_action_just_pressed("r_key")): #DEBUG
+		volume_moption_target()
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
@@ -84,6 +112,8 @@ func menu_traversal(pDirection: int = 0):
 	var previous: bool = false
 	var horizontal_direction: int = 0
 	
+	play_directional_key_sound()
+	
 	if(pDirection == 0): #UP
 		directory_int_y -= 1
 		menu_highlights_array[directory_int_y+1].visible = false
@@ -97,43 +127,26 @@ func menu_traversal(pDirection: int = 0):
 	elif(pDirection == 3): #RIGHT
 		horizontal_movement = true
 		forward = true
-		
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
 	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
 	
 	if(horizontal_movement):
+		play_confirmation_key_sound()
 		if(forward):
-			if(directory_int_x == 0):
-				print("di: " + str(directory_int_x))
-				if(directory_int_y == 0):
-					extras_moption_target()
-				elif(directory_int_y == 1):
-					options_moption_target()
-				elif(directory_int_y == 2):
-					restart_moption_target()
-					Events.restart_game.emit()
-				elif(directory_int_y == 3):
-					quit_moption_target()
-			elif(directory_int_x == 1):
-				print("di: " + str(directory_int_x))
-				if(directory_int_y == 0):
-					delete_moption_target()
-				elif(directory_int_y == 1):
-					customize_moption_target()
-				elif(directory_int_y == 2):
-					unlocks_moption_target()
-				elif(directory_int_y == 3):
-					secrets_moption_target()
+			print(str(directory_int_x) + ", " + str(directory_int_y))
+			moption_functions_array[directory_int_x][directory_int_y].call()
 		else: 
 			if(directory_int_x-1 < 0):
 				print("Can't go further back.")
 			else:
-				directory_int_x -= 1
-				enter_dir(directory_int_x)
+				enter_dir(previous_int_x)
+				print("<<Going back<<")
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
 	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
+	#current_dir_path =
+	#header_label.text = 
 
 func cd_into_dir_visual_text(pMenuOption:String):
 	var cd_dir_vis: String
@@ -143,6 +156,7 @@ func cd_into_dir_visual_text(pMenuOption:String):
 	return cd_dir_vis
 
 func enter_dir(pDirX: int = 0): #Changes the menu options, the parameter sounds like a condoooom
+	previous_int_x = directory_int_x
 	directory_int_x = pDirX
 	
 	menu_option_one_label.text = moption_dir + directory_array[directory_int_x][0]
@@ -152,32 +166,41 @@ func enter_dir(pDirX: int = 0): #Changes the menu options, the parameter sounds 
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][0])
 
+func update_current_dir_path():
+	#TODO WIP
+	#current_dir_path += dir_path_link + directory_array[directory_int_x][directory_int_y] + 
+	pass
+
 func extras_moption_target():
 	print("\nExtras...")
 	enter_dir(1)
-
+func options_moption_target():
+	print("\nOptions...")
+	enter_dir(2)
 func restart_moption_target():
 	print("\nRestarting...")
 	Events.restart_game.emit()
-
-func options_moption_target():
-	print("\nOptions...")
-
 func quit_moption_target():
 	print("\nQuit...")
 	get_tree().quit()
 
-func delete_moption_target():
+func deleted_moption_target():
 	print("\nInvalid...")
-
 func customize_moption_target():
 	print("\nCustomize...")
-
 func unlocks_moption_target():
 	print("\nUnlocks...")
-
 func secrets_moption_target():
 	print("\nSecrets...")
+
+func volume_moption_target():
+	print("\nVolume...")
+func difficulty_moption_target():
+	print("\nDifficulty...")
+func detection_meter_moption_target():
+	print("\nDetection Meter...")
+func crt_effect_moption_target():
+	print("\nCRT Effect...")
 
 func _on_blinking_cursor_timer_timeout() -> void:
 	if(blinking_cursor.is_visible_in_tree()):
@@ -187,8 +210,17 @@ func _on_blinking_cursor_timer_timeout() -> void:
 	
 	blinking_cursor.visible = !blinking_cursor.is_visible_in_tree()
 
+func play_directional_key_sound():
+	vpasp.stream = SoundLibrary.keypress_directional[randi_range(0,7)]
+	vpasp.play()
+
+func play_confirmation_key_sound():
+	vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
+	vpasp.play()
+
 #MO1 (MOUSE CLICK)
 func _on_menu_option_one_mouse_entered() -> void:
+	play_directional_key_sound()
 	directory_int_y = 0
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
@@ -198,10 +230,12 @@ func _on_menu_option_one_input_event(viewport: Node, event: InputEvent, shape_id
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				extras_moption_target()
+				play_confirmation_key_sound()
+				moption_functions_array[directory_int_x][directory_int_y].call()
 
 #MO2 (MOUSE CLICK)
 func _on_menu_option_two_mouse_entered() -> void:
+	play_directional_key_sound()
 	directory_int_y = 1
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
@@ -211,10 +245,12 @@ func _on_menu_option_two_input_event(viewport: Node, event: InputEvent, shape_id
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				options_moption_target()
+				play_confirmation_key_sound()
+				moption_functions_array[directory_int_x][directory_int_y].call()
 
 #MO3 (MOUSE CLICK)
 func _on_menu_option_three_mouse_entered() -> void:
+	play_directional_key_sound()
 	directory_int_y = 2
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
@@ -224,10 +260,12 @@ func _on_menu_option_three_input_event(viewport: Node, event: InputEvent, shape_
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				restart_moption_target()
+				play_confirmation_key_sound()
+				moption_functions_array[directory_int_x][directory_int_y].call()
 
 #M04 (MOUSE CLICK)
 func _on_menu_option_four_mouse_entered() -> void:
+	play_directional_key_sound()
 	directory_int_y = 3
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
@@ -237,4 +275,5 @@ func _on_menu_option_four_input_event(viewport: Node, event: InputEvent, shape_i
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				quit_moption_target()
+				play_confirmation_key_sound()
+				moption_functions_array[directory_int_x][directory_int_y].call()
