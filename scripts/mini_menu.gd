@@ -31,11 +31,14 @@ var directory_menu: Array[String] = ["extras", "options", "restart", "quit"] #me
 var directory_extras: Array[String] = ["[DELETED]", "customize", "unlocks", "secret"] #extras
 var directory_options: Array[String] = ["volume", "difficulty", "detection meter", "crt effect"] #options
 var directory_array: Array[Array] = [directory_menu, directory_extras, directory_options]
-var dir_path_const: String = "C:\\PERCOM\\MAT_H.dx\\menu"
+var directory_path_array: Array[String]
+var DIR_PATH_CONST: String = "C:\\PERCOM\\MAT_H.dx\\menu"
 var dir_path_end: String = "> "
 var dir_path_link: String = "\\"
+var entered_dir: String = ""
 var moption_dir: String = "<DIR> "
-var moption_con: String = "<CON>"
+var moption_app: String = "<APP> "
+var moption_action: String = ""
 var current_dir_path: String = ""
 var current_dir_x_min: int = 0
 var current_dir_x_max: int = 0
@@ -72,14 +75,15 @@ func _ready() -> void:
 	print("min_menu.gd... loaded")
 	blinking_cursor_timer.wait_time = default_visible_wait_time
 	menu_highlights_array = [mo_1_highlight, mo_2_highlight, mo_3_highlight, mo_4_highlight]
-	
-	current_dir_path = dir_path_const
+	directory_path_array.append(DIR_PATH_CONST)
+	current_dir_path = directory_path_array[0]
 	header_label.text = current_dir_path + dir_path_end + "dir"
-	current_dir_x_max = directory_array.size()-1
+	current_dir_x_max = directory_array.size()
 	current_dir_y_max = directory_array[directory_int_x].size()-1
 	enter_dir()
 
 func _process(delta):
+	#debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
 	if(has_focus):
 		if(Input.is_action_just_pressed("up_key")):
 			if(directory_int_y-1 >= current_dir_y_min):
@@ -93,8 +97,9 @@ func _process(delta):
 		if(Input.is_action_just_pressed("right_key")):
 			if(directory_int_x+1 <= current_dir_x_max):
 				menu_traversal(3)
+			else: print(str(directory_int_x+1) + " : " + str(current_dir_x_max))
 	if(Input.is_action_just_pressed("r_key")): #DEBUG
-		volume_moption_target()
+		pass
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
@@ -124,17 +129,14 @@ func menu_traversal(pDirection: int = 0):
 		menu_highlights_array[directory_int_y].visible = true
 	elif(pDirection == 2): #LEFT
 		horizontal_movement = true
+		update_current_dir_path(false)
 	elif(pDirection == 3): #RIGHT
 		horizontal_movement = true
 		forward = true
 	
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
-	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
-	
 	if(horizontal_movement):
 		play_confirmation_key_sound()
 		if(forward):
-			print(str(directory_int_x) + ", " + str(directory_int_y))
 			moption_functions_array[directory_int_x][directory_int_y].call()
 		else: 
 			if(directory_int_x-1 < 0):
@@ -144,39 +146,56 @@ func menu_traversal(pDirection: int = 0):
 				print("<<Going back<<")
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
-	debug_label.text = str(directory_int_x) + ", " + str(directory_int_y)
-	#current_dir_path =
-	#header_label.text = 
 
 func cd_into_dir_visual_text(pMenuOption:String):
 	var cd_dir_vis: String
 	
-	cd_dir_vis = dir_path_const + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
+	cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	
 	return cd_dir_vis
 
-func enter_dir(pDirX: int = 0): #Changes the menu options, the parameter sounds like a condoooom
+func enter_dir(pDirX: int = 0, pTag: bool = false): #Changes the menu options, the parameter sounds like a condoooom
+	var moption_tag_arrangement_one: Array[String] = [moption_dir, moption_dir, moption_app, moption_app]
+	var moption_tag_arrangement_two: Array[String] = [moption_app, moption_app,moption_app, moption_app]
+	var moption_tag_array_cartridge: Array[String]
 	previous_int_x = directory_int_x
 	directory_int_x = pDirX
 	
-	menu_option_one_label.text = moption_dir + directory_array[directory_int_x][0]
-	menu_option_two_label.text = moption_dir + directory_array[directory_int_x][1]
-	menu_option_three_label.text = moption_dir + directory_array[directory_int_x][2]
-	menu_option_four_label.text = moption_dir + directory_array[directory_int_x][3]
+	if(pTag):
+		moption_tag_array_cartridge = moption_tag_arrangement_two
+	else: moption_tag_array_cartridge = moption_tag_arrangement_one
+	
+	menu_option_one_label.text = moption_tag_array_cartridge[0] + directory_array[directory_int_x][0]
+	menu_option_two_label.text = moption_tag_array_cartridge[1] + directory_array[directory_int_x][1]
+	menu_option_three_label.text = moption_tag_array_cartridge[2] + directory_array[directory_int_x][2]
+	menu_option_four_label.text = moption_tag_array_cartridge[3] + directory_array[directory_int_x][3]
 	
 	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][0])
 
-func update_current_dir_path():
-	#TODO WIP
-	#current_dir_path += dir_path_link + directory_array[directory_int_x][directory_int_y] + 
-	pass
+func update_current_dir_path(pForward: bool = false):
+	var new_path: String
+	var current_last_index: int = directory_path_array.size()-1
+	
+	if(pForward):
+		if(entered_dir != directory_array[0][directory_int_y]):
+			entered_dir = directory_array[0][directory_int_y]
+			new_path = directory_path_array[current_last_index] + dir_path_link + entered_dir
+			directory_path_array.append(new_path)
+			header_label.text = new_path + dir_path_end + "dir"
+	else:
+		entered_dir = ""
+		directory_path_array.remove_at(current_last_index)
+		current_last_index = directory_path_array.size()-1
+		header_label.text = directory_path_array[current_last_index] + dir_path_end + "dir"
 
 func extras_moption_target():
 	print("\nExtras...")
-	enter_dir(1)
+	enter_dir(1,1)
+	update_current_dir_path(true)
 func options_moption_target():
 	print("\nOptions...")
-	enter_dir(2)
+	enter_dir(2,1)
+	update_current_dir_path(true)
 func restart_moption_target():
 	print("\nRestarting...")
 	Events.restart_game.emit()
