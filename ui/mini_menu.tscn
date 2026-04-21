@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://p2ena424sd2a"]
+[gd_scene load_steps=10 format=3 uid="uid://p2ena424sd2a"]
 
 [ext_resource type="Script" path="res://scripts/mini_menu.gd" id="1_53omq"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="2_8s568"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_q7dcv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fxsyv"]
@@ -9,15 +10,26 @@ font = ExtResource("2_q7dcv")
 font_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s7h4"]
-bg_color = Color(0.184314, 0.309804, 0.309804, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_8djt8"]
 line_spacing = 8.0
 font = ExtResource("2_q7dcv")
 font_size = 20
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q46ov"]
+size = Vector2(300, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8crha"]
+size = Vector2(300, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2bxc"]
+size = Vector2(300, 20)
+
 [node name="MiniMenu" type="Node2D"]
 script = ExtResource("1_53omq")
+
+[node name="VPASP" type="AudioStreamPlayer" parent="."]
+script = ExtResource("2_8s568")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -32,17 +44,18 @@ mouse_filter = 2
 [node name="HeaderLabel" type="Label" parent="VBoxContainer/cmdHeader"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "C:\\PERCOM\\MAT_H.dx\\menu> dir"
+text = "C:\\PERCOM\\MAT_H.dx"
 label_settings = SubResource("LabelSettings_fxsyv")
 metadata/_edit_lock_ = true
 
-[node name="MenuOptionOne" type="Label" parent="VBoxContainer"]
+[node name="MenuOptionOneLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> restart"
+text = "<DIR> moption_one"
 label_settings = SubResource("LabelSettings_fxsyv")
 
-[node name="MO1Highlight" type="Panel" parent="VBoxContainer/MenuOptionOne"]
+[node name="MO1Highlight" type="Panel" parent="VBoxContainer/MenuOptionOneLabel"]
 unique_name_in_owner = true
 visible = false
 z_as_relative = false
@@ -56,13 +69,14 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 
-[node name="MenuOptionTwo" type="Label" parent="VBoxContainer"]
+[node name="MenuOptionTwoLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> options"
+text = "<DIR> moption_two"
 label_settings = SubResource("LabelSettings_fxsyv")
 
-[node name="MO2Highlight" type="Panel" parent="VBoxContainer/MenuOptionTwo"]
+[node name="MO2Highlight" type="Panel" parent="VBoxContainer/MenuOptionTwoLabel"]
 unique_name_in_owner = true
 visible = false
 z_as_relative = false
@@ -76,13 +90,35 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 
-[node name="MenuOptionThree" type="Label" parent="VBoxContainer"]
+[node name="MenuOptionThreeLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
-text = "<DIR> quit"
+text = "<DIR> moption_three"
 label_settings = SubResource("LabelSettings_fxsyv")
 
-[node name="MO3Highlight" type="Panel" parent="VBoxContainer/MenuOptionThree"]
+[node name="MO3Highlight" type="Panel" parent="VBoxContainer/MenuOptionThreeLabel"]
+unique_name_in_owner = true
+visible = false
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
+
+[node name="MenuOptionFourLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+text = "<DIR> moption_four"
+label_settings = SubResource("LabelSettings_fxsyv")
+
+[node name="MO4Highlight" type="Panel" parent="VBoxContainer/MenuOptionFourLabel"]
 unique_name_in_owner = true
 visible = false
 z_as_relative = false
@@ -105,7 +141,7 @@ mouse_filter = 2
 [node name="FooterLabel" type="Label" parent="VBoxContainer/cmdFooter"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "C:\\PERCOM\\MAT_H.dx\\menu>"
+text = "C:\\PERCOM\\MAT_H.dx"
 label_settings = SubResource("LabelSettings_fxsyv")
 metadata/_edit_lock_ = true
 
@@ -119,4 +155,47 @@ metadata/_edit_lock_ = true
 [node name="BlinkingCursorTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="MenuOptionOneArea2D" type="Area2D" parent="."]
+position = Vector2(150, 33)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionOneArea2D"]
+shape = SubResource("RectangleShape2D_q46ov")
+metadata/_edit_lock_ = true
+
+[node name="MenuOptionTwoArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionTwoArea2D"]
+position = Vector2(150, 57)
+shape = SubResource("RectangleShape2D_8crha")
+
+[node name="MenuOptionThreeArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionThreeArea2D"]
+position = Vector2(150, 81)
+shape = SubResource("RectangleShape2D_f2bxc")
+
+[node name="MenuOptionFourArea2D2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionFourArea2D2"]
+position = Vector2(150, 105)
+shape = SubResource("RectangleShape2D_f2bxc")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = 78.0
+offset_top = -32.0
+offset_right = 118.0
+offset_bottom = -9.0
+
 [connection signal="timeout" from="BlinkingCursorTimer" to="." method="_on_blinking_cursor_timer_timeout"]
+[connection signal="input_event" from="MenuOptionOneArea2D" to="." method="_on_menu_option_one_input_event"]
+[connection signal="mouse_entered" from="MenuOptionOneArea2D" to="." method="_on_menu_option_one_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOptionOneArea2D" to="." method="_on_menu_option_one_mouse_exited"]
+[connection signal="input_event" from="MenuOptionTwoArea2D" to="." method="_on_menu_option_two_input_event"]
+[connection signal="mouse_entered" from="MenuOptionTwoArea2D" to="." method="_on_menu_option_two_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOptionTwoArea2D" to="." method="_on_menu_option_two_mouse_exited"]
+[connection signal="input_event" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_input_event"]
+[connection signal="mouse_entered" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_mouse_exited"]
+[connection signal="input_event" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_input_event"]
+[connection signal="mouse_entered" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_mouse_exited"]

@@ -5,6 +5,7 @@ extends Node2D
 @onready var left_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/LeftShellPanel/LeftShellVBox
 @onready var inside_v_box: VBoxContainer = %InsideVBox
 @onready var right_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/RightShellPanel/RightShellVBox
+@onready var flash_timer: Timer = $FlashTimer
 
 var occurrence_count_array: Array[Control] # holds occurrence_count objects
 var horizontal_partition_array: Array[HBoxContainer] # holds horizontal_partitions (HBoxContainers)
@@ -25,21 +26,30 @@ var trailing_cell_1
 var current_x_nav: int
 var current_y_nav: int
 
+#misc
+var game_won: bool = false
+var game_lost: bool = false
+var game_ended: bool = false
+var index_count_hold: int
+
+
 func _ready():
 	print("matrix.gd... loaded")
 	Events.cell_clicked.connect(matrix_cell_clicked)
 	Events.cipher_ready_to_receive_passkey_actual.connect(send_passkey_actual_to_cipher)
 	Events.victory_event.connect(player_victory)
 	Events.restart_game.connect(restart)
+	Events.lose_event.connect(player_lose)
 	
 	partition_and_cells_setup()
 	passkey_setup()
 	occurrence_count_setup()
 	occurrence_count_update()
 	right_shell_setup()
+	matrix_navigation(0,0) #Setting focus on the first matrix cell(0,0)
 
 func _process(delta):
-	if(has_focus):
+	if(has_focus and !game_ended):
 		# Directional Traversal
 		if(Input.is_action_just_pressed("up_key")):
 			matrix_navigation(0,-1)
@@ -112,6 +122,7 @@ func matrix_cell_clicked(pSegCode: String):
 	parity_check(pSegCode)
 
 func parity_check(pSegCode: String):
+	spotlight_cell.play_click_sound()
 	if(pSegCode[0] == passkey_actual[passkey_progress] or pSegCode[1] == passkey_actual[passkey_progress]):
 		print(pSegCode + " = " + passkey_actual[passkey_progress])
 		vpasp.stream = SoundLibrary.particle_jingle[randi_range(0,6)]
@@ -119,8 +130,12 @@ func parity_check(pSegCode: String):
 		progress_passkey(pSegCode)
 		test_local()
 		occurrence_count_update()
+		occurrence_count_array[0].correct_flash() # All of them flash. I don't know why.
 	else:
 		print("no match")
+		occurrence_count_array[0].incorrect_flash()
+		vpasp.stream = SoundLibrary.incorrect_choice
+		vpasp.play()
 		Events.progress_detection_meter.emit()
 
 func progress_passkey(pSegCode: String):
@@ -133,7 +148,9 @@ func send_passkey_actual_to_cipher():
 	Events.update_cipher_repeating_indicator.emit(passkey_actual)
 
 func player_victory():
-	print("Congratulations, bitch.")
+	game_won = true
+	game_ended = true
+	#TODO: And then do some animation>>
 
 func restart():
 	print("Matrix restarting...")
@@ -154,6 +171,15 @@ func restart():
 	current_y_nav = 0
 	spotlight_cell = partitioned_cell_array[current_x_nav][current_y_nav]
 	spotlight_cell.cell_hover(true)
+	
+	game_won = false
+	game_lost = false
+	game_ended = false
+
+func player_lose():
+	game_lost = true
+	game_ended = true
+	#TODO: And then do some animation>>
 
 func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 	if(navigation_limit_check(pXNav, pYNav)):

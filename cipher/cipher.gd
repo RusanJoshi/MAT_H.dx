@@ -3,7 +3,6 @@ extends Node2D
 @onready var cipher_right_label: Label = $VBoxContainer/CipherHBox/CipherRight/CipherRightLabel
 @onready var indicator_right_label: Label = $VBoxContainer/IndicatorHBox/IndicatorRight/IndicatorRightLabel
 @onready var detection_right_label: Label = $VBoxContainer/DetectionHBox/DetectionRight/DetectionRightLabel
-@onready var debug_passkey_progress_count: Label = $DebugPasskeyProgressCount
 
 var cumulative_passkey_visual: String = ""
 var passkey_progress_count: int = 0
@@ -58,7 +57,9 @@ func progress_detection_meter():
 		if(detection_count == 0): cumulative_detection_visual += "X"
 		else: cumulative_detection_visual += "-X"
 		detection_count += 1
-		print(detection_count)
+	
+	if(detection_count == 5):
+		lose_state()
 	
 	# update visual
 	detection_right_label.text = "[" + cumulative_detection_visual
@@ -67,9 +68,7 @@ func progress_detection_meter():
 	detection_right_label.text += "]"
 
 func win_state():
-	debug_passkey_progress_count.text = "passkey progress count: " + str(passkey_progress_count)
 	if(passkey_progress_count == 5):
-		debug_passkey_progress_count.text = "Victoria ad astra!"
 		Events.victory_event.emit()
 	elif(passkey_progress_count >= 5):
 		print("[DEBUG, win_state(), cipher.gd] INVALID passkey_progress_count VALUE. >5 \nOBSERVE, RECORD, DEBUG")
@@ -87,3 +86,8 @@ func restart():
 	detection_right_label.text = "[- - - - -]"
 	
 	Events.cipher_ready_to_receive_passkey_actual.emit()
+
+func lose_state():
+	print("LOSE STATE.")
+	Events.lose_event.emit()
+	

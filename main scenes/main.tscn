@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d0gxlfujkretg"]
+[gd_scene load_steps=18 format=3 uid="uid://d0gxlfujkretg"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dpgo0"]
 [ext_resource type="PackedScene" uid="uid://xj0nw4jduvxk" path="res://cipher/cipher.tscn" id="2_a8dqe"]
@@ -19,6 +19,22 @@ font_size = 20
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1ehd"]
 bg_color = Color(0.235294, 0.235294, 0.235294, 0.137255)
 
+[sub_resource type="Animation" id="Animation_is1ea"]
+resource_name = "FocusDimming"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FocusHighlightBackground:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.392157, 0.254902, 0.137255, 0.392157), Color(0.392157, 0.254902, 0.137255, 0.156863)]
+}
+
 [sub_resource type="Animation" id="Animation_7gklk"]
 length = 0.001
 tracks/0/type = "value"
@@ -32,6 +48,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FocusHighlightBackground:theme_override_styles/panel:bg_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.392157, 0.254902, 0.137255, 0.156863)]
 }
 
 [sub_resource type="Animation" id="Animation_a5774"]
@@ -52,12 +80,19 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lxix7"]
 _data = {
+"FocusDimming": SubResource("Animation_is1ea"),
 "RESET": SubResource("Animation_7gklk"),
 "RollingBarAnimation": SubResource("Animation_a5774")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a03l3"]
 bg_color = Color(0.392157, 0.254902, 0.137255, 0.156863)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1io8"]
+size = Vector2(499.5, 422.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnjs"]
+size = Vector2(498, 164)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_dpgo0")
@@ -97,7 +132,7 @@ offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "jericho(mechanics_microcontroller_adapter)
-serial#: XXXX-XX-X9
+serial#: 2X25-28-X8
 "
 label_settings = SubResource("LabelSettings_s5ut6")
 metadata/_edit_lock_ = true
@@ -131,7 +166,7 @@ wait_time = 5.0
 autostart = true
 
 [node name="MiniMenu" parent="." instance=ExtResource("7_lyyxq")]
-position = Vector2(12, 560)
+position = Vector2(12, 550)
 
 [node name="FocusHighlightBackground" type="Panel" parent="."]
 offset_right = 500.0
@@ -139,4 +174,23 @@ offset_bottom = 400.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a03l3")
 
+[node name="MatrixArea2D" type="Area2D" parent="."]
+position = Vector2(225, 233)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MatrixArea2D"]
+position = Vector2(25.25, 10)
+shape = SubResource("RectangleShape2D_r1io8")
+metadata/_edit_lock_ = true
+
+[node name="MiniMenuArea2D" type="Area2D" parent="."]
+position = Vector2(76, 543)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniMenuArea2D"]
+position = Vector2(173, 72)
+shape = SubResource("RectangleShape2D_4jnjs")
+debug_color = Color(0.812343, 0.376517, 0.436461, 0.42)
+metadata/_edit_lock_ = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="mouse_entered" from="MatrixArea2D" to="." method="_on_matrix_area_2d_mouse_entered"]
+[connection signal="mouse_entered" from="MiniMenuArea2D" to="." method="_on_mini_menu_area_2d_mouse_entered"]

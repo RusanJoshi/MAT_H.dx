@@ -30,6 +30,7 @@ var particle_jingle: Array[AudioStream] = [
 	preload("res://assets/sfx/particle_jingle_high_3.wav")
 ]
 
+var incorrect_choice: AudioStream = preload("res://assets/sfx/JDSherbertError1.wav")
 
 func _ready() -> void:
 	print("sound_library.gd... loaded")
