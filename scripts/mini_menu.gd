@@ -34,6 +34,7 @@ var directory_array: Array[Array] = [directory_menu, directory_extras, directory
 var directory_path_array: Array[String]
 var DIR_PATH_CONST: String = "C:\\PERCOM\\MAT_H.dx\\menu"
 var DIR_PATH_FOOTER_CONST: String = "C:\\..\\MAT_H.dx\\menu"
+var pre_header_label_text: String = ""
 var dir_path_end: String = "> "
 var dir_path_link: String = "\\"
 var entered_dir: String = ""
@@ -83,6 +84,7 @@ func _ready() -> void:
 	menu_highlights_array = [mo_1_highlight, mo_2_highlight, mo_3_highlight, mo_4_highlight]
 	directory_path_array.append(DIR_PATH_CONST)
 	current_dir_path = directory_path_array[0]
+	pre_header_label_text = directory_path_array[0]
 	header_label.text = current_dir_path + dir_path_end + "dir"
 	current_dir_x_max = directory_array.size()
 	current_dir_y_max = directory_array[directory_int_x].size()-1
@@ -159,8 +161,8 @@ func cd_into_dir_visual_text():
 	
 	
 	
-	cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
-	
+	#cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
+	cd_dir_vis = pre_header_label_text + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	
 	return cd_dir_vis
 
@@ -188,11 +190,13 @@ func update_current_dir_path(pForward: bool = false):
 			entered_dir = directory_array[0][directory_int_y]
 			new_path = directory_path_array[current_last_index] + dir_path_link + entered_dir
 			directory_path_array.append(new_path)
+			pre_header_label_text = new_path
 			header_label.text = new_path + dir_path_end + "dir"
 	else:
 		entered_dir = ""
 		directory_path_array.remove_at(current_last_index)
 		current_last_index = directory_path_array.size()-1
+		pre_header_label_text = new_path
 		header_label.text = directory_path_array[current_last_index] + dir_path_end + "dir"
 
 func extras_moption_target():
