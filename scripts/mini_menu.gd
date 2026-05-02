@@ -33,12 +33,19 @@ var directory_options: Array[String] = ["volume", "difficulty", "detection meter
 var directory_array: Array[Array] = [directory_menu, directory_extras, directory_options]
 var directory_path_array: Array[String]
 var DIR_PATH_CONST: String = "C:\\PERCOM\\MAT_H.dx\\menu"
+var DIR_PATH_FOOTER_CONST: String = "C:\\..\\MAT_H.dx\\menu"
+var pre_header_label_text: String = ""
 var dir_path_end: String = "> "
 var dir_path_link: String = "\\"
 var entered_dir: String = ""
 var moption_dir: String = "<DIR> "
 var moption_app: String = "<APP> "
-var moption_action: String = ""
+#var moption_action: String = ""
+var moption_tag_arrangement_one: Array[String] = [
+	moption_dir, moption_dir, moption_app, moption_app]
+var moption_tag_arrangement_two: Array[String] = [
+	moption_app, moption_app,moption_app, moption_app]
+var moption_tag_array_cartridge: Array[String]
 var current_dir_path: String = ""
 var current_dir_x_min: int = 0
 var current_dir_x_max: int = 0
@@ -77,6 +84,7 @@ func _ready() -> void:
 	menu_highlights_array = [mo_1_highlight, mo_2_highlight, mo_3_highlight, mo_4_highlight]
 	directory_path_array.append(DIR_PATH_CONST)
 	current_dir_path = directory_path_array[0]
+	pre_header_label_text = directory_path_array[0]
 	header_label.text = current_dir_path + dir_path_end + "dir"
 	current_dir_x_max = directory_array.size()
 	current_dir_y_max = directory_array[directory_int_x].size()-1
@@ -103,7 +111,7 @@ func _process(delta):
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 
 func remove_menu_highlights(): # (?)I don't know why, but this executes once before I remember calling it.
 	menu_highlights_array[directory_int_y].visible = false
@@ -145,19 +153,20 @@ func menu_traversal(pDirection: int = 0):
 				enter_dir(previous_int_x)
 				print("<<Going back<<")
 	
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 
-func cd_into_dir_visual_text(pMenuOption:String):
+func cd_into_dir_visual_text():
 	var cd_dir_vis: String
+	var cd_action: String
 	
-	cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
+	
+	
+	#cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
+	cd_dir_vis = pre_header_label_text + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	
 	return cd_dir_vis
 
 func enter_dir(pDirX: int = 0, pTag: bool = false): #Changes the menu options, the parameter sounds like a condoooom
-	var moption_tag_arrangement_one: Array[String] = [moption_dir, moption_dir, moption_app, moption_app]
-	var moption_tag_arrangement_two: Array[String] = [moption_app, moption_app,moption_app, moption_app]
-	var moption_tag_array_cartridge: Array[String]
 	previous_int_x = directory_int_x
 	directory_int_x = pDirX
 	
@@ -170,7 +179,7 @@ func enter_dir(pDirX: int = 0, pTag: bool = false): #Changes the menu options, t
 	menu_option_three_label.text = moption_tag_array_cartridge[2] + directory_array[directory_int_x][2]
 	menu_option_four_label.text = moption_tag_array_cartridge[3] + directory_array[directory_int_x][3]
 	
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][0])
+	footer_label.text = cd_into_dir_visual_text()
 
 func update_current_dir_path(pForward: bool = false):
 	var new_path: String
@@ -181,11 +190,13 @@ func update_current_dir_path(pForward: bool = false):
 			entered_dir = directory_array[0][directory_int_y]
 			new_path = directory_path_array[current_last_index] + dir_path_link + entered_dir
 			directory_path_array.append(new_path)
+			pre_header_label_text = new_path
 			header_label.text = new_path + dir_path_end + "dir"
 	else:
 		entered_dir = ""
 		directory_path_array.remove_at(current_last_index)
 		current_last_index = directory_path_array.size()-1
+		pre_header_label_text = new_path
 		header_label.text = directory_path_array[current_last_index] + dir_path_end + "dir"
 
 func extras_moption_target():
@@ -242,7 +253,7 @@ func _on_menu_option_one_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 0
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 func _on_menu_option_one_mouse_exited() -> void:
 	menu_highlights_array[0].visible = false
 func _on_menu_option_one_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -257,7 +268,7 @@ func _on_menu_option_two_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 1
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 func _on_menu_option_two_mouse_exited() -> void:
 	menu_highlights_array[1].visible = false
 func _on_menu_option_two_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -272,7 +283,7 @@ func _on_menu_option_three_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 2
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 func _on_menu_option_three_mouse_exited() -> void:
 	menu_highlights_array[2].visible = false
 func _on_menu_option_three_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -287,7 +298,7 @@ func _on_menu_option_four_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 3
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text(directory_array[directory_int_x][directory_int_y])
+	footer_label.text = cd_into_dir_visual_text()
 func _on_menu_option_four_mouse_exited() -> void:
 	menu_highlights_array[3].visible = false
 func _on_menu_option_four_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
