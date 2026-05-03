@@ -18,6 +18,7 @@ extends Node2D
 @onready var mo_2_highlight: Panel = %MO2Highlight
 @onready var mo_3_highlight: Panel = %MO3Highlight
 @onready var mo_4_highlight: Panel = %MO4Highlight
+@onready var rb_highlight: Panel = $ReturnButtonLabel/RBHighlight
 
 @export var has_focus: bool
 
@@ -159,8 +160,6 @@ func cd_into_dir_visual_text():
 	var cd_dir_vis: String
 	var cd_action: String
 	
-	
-	
 	#cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	cd_dir_vis = pre_header_label_text + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	
@@ -196,7 +195,7 @@ func update_current_dir_path(pForward: bool = false):
 		entered_dir = ""
 		directory_path_array.remove_at(current_last_index)
 		current_last_index = directory_path_array.size()-1
-		pre_header_label_text = new_path
+		pre_header_label_text = directory_path_array[current_last_index]
 		header_label.text = directory_path_array[current_last_index] + dir_path_end + "dir"
 
 func extras_moption_target():
@@ -307,3 +306,21 @@ func _on_menu_option_four_input_event(viewport: Node, event: InputEvent, shape_i
 			if event.pressed:
 				play_confirmation_key_sound()
 				moption_functions_array[directory_int_x][directory_int_y].call()
+
+
+func _on_return_button_area_2d_mouse_entered() -> void:
+	rb_highlight.visible = true
+	#clear other highlights
+	menu_highlights_array[0].visible = false
+	menu_highlights_array[1].visible = false
+	menu_highlights_array[2].visible = false
+	menu_highlights_array[3].visible = false
+func _on_return_button_area_2d_mouse_exited() -> void:
+	rb_highlight.visible = false
+func _on_return_button_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				play_confirmation_key_sound()
+				if(directory_int_x > 0):
+					menu_traversal(2)

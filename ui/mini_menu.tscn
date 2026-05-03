@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://p2ena424sd2a"]
+[gd_scene load_steps=11 format=3 uid="uid://p2ena424sd2a"]
 
 [ext_resource type="Script" path="res://scripts/mini_menu.gd" id="1_53omq"]
 [ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="2_8s568"]
@@ -25,11 +25,17 @@ size = Vector2(300, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f2bxc"]
 size = Vector2(300, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o14"]
+size = Vector2(60, 20)
+
 [node name="MiniMenu" type="Node2D"]
 script = ExtResource("1_53omq")
 
 [node name="VPASP" type="AudioStreamPlayer" parent="."]
 script = ExtResource("2_8s568")
+
+[node name="BlinkingCursorTimer" type="Timer" parent="."]
+autostart = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -152,8 +158,27 @@ text = "█"
 label_settings = SubResource("LabelSettings_8djt8")
 metadata/_edit_lock_ = true
 
-[node name="BlinkingCursorTimer" type="Timer" parent="."]
-autostart = true
+[node name="ReturnButtonLabel" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 1
+offset_left = 427.0
+offset_right = 472.0
+offset_bottom = 20.0
+text = "<<rt"
+label_settings = SubResource("LabelSettings_fxsyv")
+
+[node name="RBHighlight" type="Panel" parent="ReturnButtonLabel"]
+visible = false
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s7h4")
 
 [node name="MenuOptionOneArea2D" type="Area2D" parent="."]
 position = Vector2(150, 33)
@@ -174,13 +199,21 @@ shape = SubResource("RectangleShape2D_8crha")
 position = Vector2(150, 81)
 shape = SubResource("RectangleShape2D_f2bxc")
 
-[node name="MenuOptionFourArea2D2" type="Area2D" parent="."]
+[node name="MenuOptionFourArea2D" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionFourArea2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MenuOptionFourArea2D"]
 position = Vector2(150, 105)
 shape = SubResource("RectangleShape2D_f2bxc")
 
+[node name="ReturnButtonArea2D" type="Area2D" parent="."]
+position = Vector2(452, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnButtonArea2D"]
+shape = SubResource("RectangleShape2D_e2o14")
+metadata/_edit_lock_ = true
+
 [node name="DebugLabel" type="Label" parent="."]
+visible = false
 offset_left = 78.0
 offset_top = -32.0
 offset_right = 118.0
@@ -196,6 +229,9 @@ offset_bottom = -9.0
 [connection signal="input_event" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_input_event"]
 [connection signal="mouse_entered" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_mouse_entered"]
 [connection signal="mouse_exited" from="MenuOptionThreeArea2D" to="." method="_on_menu_option_three_mouse_exited"]
-[connection signal="input_event" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_input_event"]
-[connection signal="mouse_entered" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_mouse_entered"]
-[connection signal="mouse_exited" from="MenuOptionFourArea2D2" to="." method="_on_menu_option_four_mouse_exited"]
+[connection signal="input_event" from="MenuOptionFourArea2D" to="." method="_on_menu_option_four_input_event"]
+[connection signal="mouse_entered" from="MenuOptionFourArea2D" to="." method="_on_menu_option_four_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOptionFourArea2D" to="." method="_on_menu_option_four_mouse_exited"]
+[connection signal="input_event" from="ReturnButtonArea2D" to="." method="_on_return_button_area_2d_input_event"]
+[connection signal="mouse_entered" from="ReturnButtonArea2D" to="." method="_on_return_button_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="ReturnButtonArea2D" to="." method="_on_return_button_area_2d_mouse_exited"]
