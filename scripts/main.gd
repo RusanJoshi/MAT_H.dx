@@ -42,6 +42,8 @@ func shin_update_focus():
 		focus_highlight_background.position.x = 0
 		focus_highlight_background.position.y = mini_menu.position.y - 10
 
+
+
 func _on_matrix_area_2d_mouse_entered() -> void:
 	if(focus_boolean):
 		focus_boolean = false

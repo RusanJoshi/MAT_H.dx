@@ -38,8 +38,8 @@ func _ready():
 	Events.cell_clicked.connect(matrix_cell_clicked)
 	Events.cipher_ready_to_receive_passkey_actual.connect(send_passkey_actual_to_cipher)
 	Events.victory_event.connect(player_victory)
-	Events.restart_game.connect(restart)
 	Events.lose_event.connect(player_lose)
+	Events.restart_game.connect(restart)
 	
 	partition_and_cells_setup()
 	passkey_setup()
@@ -128,7 +128,7 @@ func parity_check(pSegCode: String):
 		vpasp.stream = SoundLibrary.particle_jingle[randi_range(0,6)]
 		vpasp.play()
 		progress_passkey(pSegCode)
-		test_local()
+		#test_local()
 		occurrence_count_update()
 		occurrence_count_array[0].correct_flash() # All of them flash. I don't know why.
 	else:
@@ -149,6 +149,11 @@ func send_passkey_actual_to_cipher():
 
 func player_victory():
 	game_won = true
+	game_ended = true
+	#TODO: And then do some animation>>
+
+func player_lose():
+	game_lost = true
 	game_ended = true
 	#TODO: And then do some animation>>
 
@@ -176,10 +181,6 @@ func restart():
 	game_lost = false
 	game_ended = false
 
-func player_lose():
-	game_lost = true
-	game_ended = true
-	#TODO: And then do some animation>>
 
 func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 	if(navigation_limit_check(pXNav, pYNav)):

@@ -41,7 +41,7 @@ var dir_path_link: String = "\\"
 var entered_dir: String = ""
 var moption_dir: String = "<DIR> "
 var moption_app: String = "<APP> "
-#var moption_action: String = ""
+var moption_action: String = ""
 var moption_tag_arrangement_one: Array[String] = [
 	moption_dir, moption_dir, moption_app, moption_app]
 var moption_tag_arrangement_two: Array[String] = [
@@ -112,9 +112,9 @@ func _process(delta):
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 
-func remove_menu_highlights(): # (?)I don't know why, but this executes once before I remember calling it.
+func remove_menu_highlights():
 	menu_highlights_array[directory_int_y].visible = false
 	footer_label.text = current_dir_path + dir_path_end
 	directory_int_y = 0
@@ -154,13 +154,12 @@ func menu_traversal(pDirection: int = 0):
 				enter_dir(previous_int_x)
 				print("<<Going back<<")
 	
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 
-func cd_into_dir_visual_text():
+func update_footer_text():
 	var cd_dir_vis: String
 	var cd_action: String
 	
-	#cd_dir_vis = DIR_PATH_CONST + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	cd_dir_vis = pre_header_label_text + dir_path_end + "cd " + directory_array[directory_int_x][directory_int_y] + " -dir"
 	
 	return cd_dir_vis
@@ -178,7 +177,7 @@ func enter_dir(pDirX: int = 0, pTag: bool = false): #Changes the menu options, t
 	menu_option_three_label.text = moption_tag_array_cartridge[2] + directory_array[directory_int_x][2]
 	menu_option_four_label.text = moption_tag_array_cartridge[3] + directory_array[directory_int_x][3]
 	
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 
 func update_current_dir_path(pForward: bool = false):
 	var new_path: String
@@ -252,7 +251,7 @@ func _on_menu_option_one_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 0
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 func _on_menu_option_one_mouse_exited() -> void:
 	menu_highlights_array[0].visible = false
 func _on_menu_option_one_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -267,7 +266,7 @@ func _on_menu_option_two_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 1
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 func _on_menu_option_two_mouse_exited() -> void:
 	menu_highlights_array[1].visible = false
 func _on_menu_option_two_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -282,7 +281,7 @@ func _on_menu_option_three_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 2
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 func _on_menu_option_three_mouse_exited() -> void:
 	menu_highlights_array[2].visible = false
 func _on_menu_option_three_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -297,7 +296,7 @@ func _on_menu_option_four_mouse_entered() -> void:
 	play_directional_key_sound()
 	directory_int_y = 3
 	menu_highlights_array[directory_int_y].visible = true
-	footer_label.text = cd_into_dir_visual_text()
+	footer_label.text = update_footer_text()
 func _on_menu_option_four_mouse_exited() -> void:
 	menu_highlights_array[3].visible = false
 func _on_menu_option_four_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -307,7 +306,7 @@ func _on_menu_option_four_input_event(viewport: Node, event: InputEvent, shape_i
 				play_confirmation_key_sound()
 				moption_functions_array[directory_int_x][directory_int_y].call()
 
-
+#RETURN BUTTON
 func _on_return_button_area_2d_mouse_entered() -> void:
 	rb_highlight.visible = true
 	#clear other highlights
