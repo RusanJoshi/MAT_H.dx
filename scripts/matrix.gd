@@ -37,8 +37,8 @@ func _ready():
 	print("matrix.gd... loaded")
 	Events.cell_clicked.connect(matrix_cell_clicked)
 	Events.cipher_ready_to_receive_passkey_actual.connect(send_passkey_actual_to_cipher)
-	Events.victory_event.connect(player_victory)
-	Events.lose_event.connect(player_lose)
+	Events.victory_event.connect(win_state)
+	Events.lose_event.connect(lose_state)
 	Events.restart_game.connect(restart)
 	
 	partition_and_cells_setup()
@@ -147,12 +147,12 @@ func send_passkey_actual_to_cipher():
 	print("Sending " + passkey_actual)
 	Events.update_cipher_repeating_indicator.emit(passkey_actual)
 
-func player_victory():
+func win_state():
 	game_won = true
 	game_ended = true
 	#TODO: And then do some animation>>
 
-func player_lose():
+func lose_state():
 	game_lost = true
 	game_ended = true
 	#TODO: And then do some animation>>

@@ -8,6 +8,9 @@
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="5_elmyh"]
 [ext_resource type="PackedScene" uid="uid://p2ena424sd2a" path="res://ui/mini_menu.tscn" id="7_lyyxq"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ve7wv"]
+bg_color = Color(0.392157, 0.254902, 0.137255, 0.156863)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2f3m"]
 bg_color = Color(0.823529, 0.470588, 0.647059, 0)
 
@@ -85,9 +88,6 @@ _data = {
 "RollingBarAnimation": SubResource("Animation_a5774")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a03l3"]
-bg_color = Color(0.392157, 0.254902, 0.137255, 0.156863)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r1io8"]
 size = Vector2(499.5, 422.5)
 
@@ -108,6 +108,12 @@ position = Vector2(4, 130)
 
 [node name="CipherKey" parent="." instance=ExtResource("2_a8dqe")]
 position = Vector2(12, 296)
+
+[node name="FocusHighlightBackground" type="Panel" parent="."]
+offset_right = 500.0
+offset_bottom = 400.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ve7wv")
 
 [node name="custom_window_border" parent="." instance=ExtResource("3_ct3fv")]
 
@@ -167,12 +173,6 @@ autostart = true
 
 [node name="MiniMenu" parent="." instance=ExtResource("7_lyyxq")]
 position = Vector2(12, 550)
-
-[node name="FocusHighlightBackground" type="Panel" parent="."]
-offset_right = 500.0
-offset_bottom = 400.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_a03l3")
 
 [node name="MatrixArea2D" type="Area2D" parent="."]
 position = Vector2(225, 233)
