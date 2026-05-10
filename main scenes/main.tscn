@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d0gxlfujkretg"]
+[gd_scene load_steps=19 format=3 uid="uid://d0gxlfujkretg"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dpgo0"]
 [ext_resource type="PackedScene" uid="uid://xj0nw4jduvxk" path="res://cipher/cipher.tscn" id="2_a8dqe"]
@@ -8,34 +8,20 @@
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="5_elmyh"]
 [ext_resource type="PackedScene" uid="uid://p2ena424sd2a" path="res://ui/mini_menu.tscn" id="7_lyyxq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ve7wv"]
-bg_color = Color(0.392157, 0.254902, 0.137255, 0.156863)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2f3m"]
-bg_color = Color(0.823529, 0.470588, 0.647059, 0)
-
-[sub_resource type="LabelSettings" id="LabelSettings_s5ut6"]
-line_spacing = 8.0
-font = ExtResource("5_elmyh")
-font_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1ehd"]
-bg_color = Color(0.235294, 0.235294, 0.235294, 0.137255)
-
 [sub_resource type="Animation" id="Animation_is1ea"]
 resource_name = "FocusDimming"
 length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FocusHighlightBackground:theme_override_styles/panel:bg_color")
+tracks/0/path = NodePath("FocusHighlightBackground:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0.392157, 0.254902, 0.137255, 0.392157), Color(0.392157, 0.254902, 0.137255, 0.156863)]
+"values": [Color(1, 1, 1, 0.882353), Color(1, 1, 1, 0.392157)]
 }
 
 [sub_resource type="Animation" id="Animation_7gklk"]
@@ -55,14 +41,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("FocusHighlightBackground:theme_override_styles/panel:bg_color")
+tracks/1/path = NodePath("FocusHighlightBackground:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0.392157, 0.254902, 0.137255, 0.156863)]
+"values": [Color(1, 1, 1, 0.784314)]
 }
 
 [sub_resource type="Animation" id="Animation_a5774"]
@@ -88,6 +74,22 @@ _data = {
 "RollingBarAnimation": SubResource("Animation_a5774")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ve7wv"]
+bg_color = Color(0.392157, 0.254902, 0.137255, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l060"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2f3m"]
+bg_color = Color(0.823529, 0.470588, 0.647059, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_s5ut6"]
+line_spacing = 8.0
+font = ExtResource("5_elmyh")
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1ehd"]
+bg_color = Color(0.235294, 0.235294, 0.235294, 0.137255)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r1io8"]
 size = Vector2(499.5, 422.5)
 
@@ -96,6 +98,11 @@ size = Vector2(498, 164)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_dpgo0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lxix7")
+}
 
 [node name="Background" type="ColorRect" parent="."]
 offset_right = 500.0
@@ -110,10 +117,18 @@ position = Vector2(4, 130)
 position = Vector2(12, 296)
 
 [node name="FocusHighlightBackground" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.784314)
 offset_right = 500.0
 offset_bottom = 400.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ve7wv")
+
+[node name="EndFlashPanel" type="Panel" parent="."]
+visible = false
+offset_right = 500.0
+offset_bottom = 400.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2l060")
 
 [node name="custom_window_border" parent="." instance=ExtResource("3_ct3fv")]
 
@@ -160,12 +175,8 @@ metadata/_edit_lock_ = true
 [node name="RollingBar" type="Panel" parent="."]
 offset_right = 500.0
 offset_bottom = 15.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_r1ehd")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_lxix7")
-}
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0

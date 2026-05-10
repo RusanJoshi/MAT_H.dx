@@ -15,9 +15,9 @@ var password_length = 5 # I don't think this is used anywhere meaningfully.
 var crt_shader_bool: bool = true
 var cell_highlight_color: Color = Color.DARK_SLATE_GRAY
 
-#var default_focus_highlight_color: Color = Color8(100, 65, 35, 40)
-var default_focus_highlight_color: Color = Color.RED
-var focus_highlight_color: Color
+var default_focus_highlight_color: Color = Color8(100, 65, 35, 100)
+var win_focus_highlight_color: Color = Color8(34, 139, 34, 100)
+var lose_focus_highlight_color: Color = Color8(178, 34, 34, 100)
 
 # Toggle CRT shader/ adjust intensity
 # Adjust game volume
@@ -27,4 +27,3 @@ var focus_highlight_color: Color
 func _ready() -> void:
 	print("config.gd... loaded")
 	#print("Color (float): r=", main_highlight_color.r, ", g=", main_highlight_color.g, ", b=", main_highlight_color.b, ", a=", main_highlight_color.a)
-	focus_highlight_color = default_focus_highlight_color

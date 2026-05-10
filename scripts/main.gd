@@ -7,6 +7,8 @@ extends Node2D
 @onready var matrix: Node2D = $Matrix
 @onready var mini_menu: Node2D = $MiniMenu
 @onready var focus_highlight_background: Panel = $FocusHighlightBackground
+@onready var end_flash_panel: Panel = $EndFlashPanel
+
 
 #focus (false = mat, true = mini menu)
 var focus_boolean: bool = false
@@ -14,7 +16,7 @@ var dragging: bool = false
 var drag_offset:= Vector2i.ZERO
 var sensitivity: float = 1.2
 var datetime_dict = Time.get_datetime_dict_from_system()
-
+var stylebox
 
 func _ready():
 	print("main.gd... loaded")
@@ -25,7 +27,7 @@ func _ready():
 	shin_update_focus()
 	date_and_time.text = "boot: " + str(datetime_dict.month) + "-" + str(datetime_dict.day) + "-" + str(datetime_dict.year)
 	
-	var stylebox = focus_highlight_background.get_theme_stylebox("panel") as StyleBoxFlat
+	stylebox = focus_highlight_background.get_theme_stylebox("panel") as StyleBoxFlat
 	print(stylebox.bg_color)
 
 
@@ -51,13 +53,16 @@ func shin_update_focus():
 
 func win_state():
 	print("main.gd, WIN")
+	stylebox.bg_color = ConfigGame.win_focus_highlight_color
 
 func lose_state():
 	print("main.gd, LOSE")
+	stylebox.bg_color = ConfigGame.lose_focus_highlight_color
+	print(stylebox.bg_color)
 
 func reset_focus_color():
 	print("main.gd, RESTART")
-	#focus_highlight_background
+	stylebox.bg_color = ConfigGame.default_focus_highlight_color
 
 func _on_matrix_area_2d_mouse_entered() -> void:
 	if(focus_boolean):

@@ -19,6 +19,7 @@ extends Node2D
 @onready var mo_3_highlight: Panel = %MO3Highlight
 @onready var mo_4_highlight: Panel = %MO4Highlight
 @onready var rb_highlight: Panel = $ReturnButtonLabel/RBHighlight
+var moption_stylebox: StyleBoxFlat = load("res://ui/moption_highlight_test.tres")
 
 @export var has_focus: bool
 
@@ -114,8 +115,9 @@ func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = update_footer_text()
 
-func remove_menu_highlights():
+func remove_menu_highlights(): #Also adjust the moption highlight colors
 	menu_highlights_array[directory_int_y].visible = false
+	moption_stylebox.bg_color = ConfigGame.cell_highlight_color
 	footer_label.text = current_dir_path + dir_path_end
 	directory_int_y = 0
 

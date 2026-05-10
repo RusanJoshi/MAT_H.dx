@@ -68,13 +68,14 @@ func progress_detection_meter():
 	detection_right_label.text += "]"
 
 func win_state():
+	print("cipher.gd, WIN")
 	if(passkey_progress_count == 5):
 		Events.victory_event.emit()
 	elif(passkey_progress_count >= 5):
 		print("[DEBUG, win_state(), cipher.gd] INVALID passkey_progress_count VALUE. (>5) \nOBSERVE, RECORD, DEBUG")
 
 func lose_state():
-	print("LOSE STATE.")
+	print("cipher.gd, LOSE")
 	Events.lose_event.emit()
 
 func restart():
