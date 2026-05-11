@@ -189,7 +189,7 @@ func matrix_navigation(pXNav: int = 0, pYNav: int = 0):
 		
 		previous_cell = spotlight_cell
 		if(previous_cell == null):
-			print("Nothing")
+			print("DEBUG : matrix.gd, matrix_navigation()")
 		else: previous_cell.cell_hover(false)
 		spotlight_cell = partitioned_cell_array[current_y_nav][current_x_nav] # new cell at updated coords
 		spotlight_cell.cell_hover(true)

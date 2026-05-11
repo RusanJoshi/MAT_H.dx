@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d0gxlfujkretg"]
+[gd_scene load_steps=20 format=3 uid="uid://d0gxlfujkretg"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dpgo0"]
 [ext_resource type="PackedScene" uid="uid://xj0nw4jduvxk" path="res://cipher/cipher.tscn" id="2_a8dqe"]
@@ -7,22 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://cmcsx04ay8exk" path="res://shaders/crt_shader.tscn" id="4_rfrf3"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="5_elmyh"]
 [ext_resource type="PackedScene" uid="uid://p2ena424sd2a" path="res://ui/mini_menu.tscn" id="7_lyyxq"]
-
-[sub_resource type="Animation" id="Animation_is1ea"]
-resource_name = "FocusDimming"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FocusHighlightBackground:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0.882353), Color(1, 1, 1, 0.392157)]
-}
 
 [sub_resource type="Animation" id="Animation_7gklk"]
 length = 0.001
@@ -51,7 +35,29 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 0.784314)]
 }
 
-[sub_resource type="Animation" id="Animation_a5774"]
+[sub_resource type="Animation" id="Animation_is1ea"]
+resource_name = "FocusDimming"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FocusHighlightBackground:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.882353), Color(1, 1, 1, 0.392157)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lxix7"]
+_data = {
+"FocusDimming": SubResource("Animation_is1ea"),
+"RESET": SubResource("Animation_7gklk")
+}
+
+[sub_resource type="Animation" id="Animation_1ordg"]
 resource_name = "RollingBarAnimation"
 length = 5.0
 tracks/0/type = "value"
@@ -67,11 +73,9 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(0, 700)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_lxix7"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rsj4i"]
 _data = {
-"FocusDimming": SubResource("Animation_is1ea"),
-"RESET": SubResource("Animation_7gklk"),
-"RollingBarAnimation": SubResource("Animation_a5774")
+"RollingBarAnimation": SubResource("Animation_1ordg")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ve7wv"]
@@ -99,9 +103,14 @@ size = Vector2(498, 164)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_dpgo0")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="FocusAnimPlay" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_lxix7")
+}
+
+[node name="RollingBarAnimPlay" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rsj4i")
 }
 
 [node name="Background" type="ColorRect" parent="."]

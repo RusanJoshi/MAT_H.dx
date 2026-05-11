@@ -1,6 +1,7 @@
 extends Node2D
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var focus_anim_play: AnimationPlayer = $FocusAnimPlay
+@onready var rolling_bar_anim_play: AnimationPlayer = $RollingBarAnimPlay
 @onready var timer: Timer = $Timer
 @onready var header_label: Label = %HeaderLabel
 @onready var date_and_time: Label = %DateAndTime
@@ -20,24 +21,22 @@ var stylebox
 
 func _ready():
 	print("main.gd... loaded")
-	Events.victory_event.connect(win_state)
-	Events.lose_event.connect(lose_state)
+	Events.victory_event.connect(end_game_state.bind(true))
+	Events.lose_event.connect(end_game_state.bind(false))
 	Events.restart_game.connect(reset_focus_color)
 	
 	shin_update_focus()
 	date_and_time.text = "boot: " + str(datetime_dict.month) + "-" + str(datetime_dict.day) + "-" + str(datetime_dict.year)
 	
 	stylebox = focus_highlight_background.get_theme_stylebox("panel") as StyleBoxFlat
-	print(stylebox.bg_color)
-
 
 func _process(delta):
 	if(Input.is_action_just_pressed("tab_key")): #switches focus between the matrix and mini-menu
 		focus_boolean = !focus_boolean
 		shin_update_focus()
 
+
 func shin_update_focus():
-	animation_player.play("FocusDimming")
 	
 	if(!focus_boolean):
 		matrix.has_focus = true
@@ -50,19 +49,22 @@ func shin_update_focus():
 		mini_menu.on_first_focus()
 		focus_highlight_background.position.x = 0
 		focus_highlight_background.position.y = mini_menu.position.y - 10
+		
+	focus_anim_play.play("FocusDimming")
 
-func win_state():
-	print("main.gd, WIN")
-	stylebox.bg_color = ConfigGame.win_focus_highlight_color
-
-func lose_state():
-	print("main.gd, LOSE")
-	stylebox.bg_color = ConfigGame.lose_focus_highlight_color
-	print(stylebox.bg_color)
+func end_game_state(pState: bool): #win/lose
+	if(pState):#win
+		stylebox.bg_color = ConfigGame.win_focus_highlight_color
+	else:#lose
+		stylebox.bg_color = ConfigGame.lose_focus_highlight_color
+	
+	focus_boolean = !focus_boolean
+	shin_update_focus()
 
 func reset_focus_color():
-	print("main.gd, RESTART")
 	stylebox.bg_color = ConfigGame.default_focus_highlight_color
+	#focus_boolean = !focus_boolean
+	#shin_update_focus()
 
 func _on_matrix_area_2d_mouse_entered() -> void:
 	if(focus_boolean):
@@ -74,4 +76,4 @@ func _on_mini_menu_area_2d_mouse_entered() -> void:
 		shin_update_focus()
 
 func _on_timer_timeout() -> void:
-	animation_player.play("RollingBarAnimation")
+	rolling_bar_anim_play.play("RollingBarAnimation")
