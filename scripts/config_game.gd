@@ -13,7 +13,11 @@ var horizontal_dimension = 5
 var password_length = 5 # I don't think this is used anywhere meaningfully.
 
 var crt_shader_bool: bool = true
-var main_highlight_color: Color = Color.DARK_SLATE_GRAY
+var cell_highlight_color: Color = Color.DARK_SLATE_GRAY
+
+var default_focus_highlight_color: Color = Color8(100, 65, 35, 100)
+var win_focus_highlight_color: Color = Color8(34, 139, 34, 100)
+var lose_focus_highlight_color: Color = Color8(178, 34, 34, 100)
 
 # Toggle CRT shader/ adjust intensity
 # Adjust game volume

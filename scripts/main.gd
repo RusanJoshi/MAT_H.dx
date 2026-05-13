@@ -1,35 +1,44 @@
 extends Node2D
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var focus_anim_play: AnimationPlayer = $FocusAnimPlay
+@onready var rolling_bar_anim_play: AnimationPlayer = $RollingBarAnimPlay
 @onready var timer: Timer = $Timer
 @onready var header_label: Label = %HeaderLabel
 @onready var date_and_time: Label = %DateAndTime
 @onready var matrix: Node2D = $Matrix
 @onready var mini_menu: Node2D = $MiniMenu
 @onready var focus_highlight_background: Panel = $FocusHighlightBackground
+@onready var end_flash_panel: Panel = $EndFlashPanel
+
 
 #focus (false = mat, true = mini menu)
 var focus_boolean: bool = false
-
 var dragging: bool = false
 var drag_offset:= Vector2i.ZERO
 var sensitivity: float = 1.2
 var datetime_dict = Time.get_datetime_dict_from_system()
-
+var stylebox
+var perfect_game_bool: bool = false
 
 func _ready():
 	print("main.gd... loaded")
+	Events.victory_event.connect(end_game_state.bind(true))
+	Events.lose_event.connect(end_game_state.bind(false))
+	Events.restart_game.connect(reset_focus_color)
+	Events.perfect_game.connect(perfect_game_toggle)
+	
 	shin_update_focus()
 	date_and_time.text = "boot: " + str(datetime_dict.month) + "-" + str(datetime_dict.day) + "-" + str(datetime_dict.year)
+	
+	stylebox = focus_highlight_background.get_theme_stylebox("panel") as StyleBoxFlat
 
 func _process(delta):
 	if(Input.is_action_just_pressed("tab_key")): #switches focus between the matrix and mini-menu
 		focus_boolean = !focus_boolean
 		shin_update_focus()
 
+
 func shin_update_focus():
-	animation_player.play("FocusDimming")
-	
 	if(!focus_boolean):
 		matrix.has_focus = true
 		mini_menu.has_focus = false
@@ -41,6 +50,32 @@ func shin_update_focus():
 		mini_menu.on_first_focus()
 		focus_highlight_background.position.x = 0
 		focus_highlight_background.position.y = mini_menu.position.y - 10
+		
+	focus_anim_play.play("FocusDimming")
+
+func end_game_state(pState: bool): #win/lose
+	if(pState):#win
+		if(perfect_game_bool):
+			print("blue")
+			stylebox.bg_color = Color.ROYAL_BLUE
+		else:
+			print("green")
+			stylebox.bg_color = ConfigGame.win_focus_highlight_color
+		print(stylebox.bg_color)
+	else:#lose
+		stylebox.bg_color = ConfigGame.lose_focus_highlight_color
+	
+	focus_boolean = !focus_boolean
+	shin_update_focus()
+
+func reset_focus_color():
+	stylebox.bg_color = ConfigGame.default_focus_highlight_color
+	#focus_boolean = !focus_boolean
+	#shin_update_focus()
+
+func perfect_game_toggle():
+	perfect_game_bool != perfect_game_bool
+	print(perfect_game_bool)
 
 func _on_matrix_area_2d_mouse_entered() -> void:
 	if(focus_boolean):
@@ -52,4 +87,4 @@ func _on_mini_menu_area_2d_mouse_entered() -> void:
 		shin_update_focus()
 
 func _on_timer_timeout() -> void:
-	animation_player.play("RollingBarAnimation")
+	rolling_bar_anim_play.play("RollingBarAnimation")

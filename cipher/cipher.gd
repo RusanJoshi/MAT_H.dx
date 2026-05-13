@@ -1,5 +1,5 @@
 extends Node2D
-
+#[!] This is script needs to be moved to the 'scripts' folder for the sake of consistency.
 @onready var cipher_right_label: Label = $VBoxContainer/CipherHBox/CipherRight/CipherRightLabel
 @onready var indicator_right_label: Label = $VBoxContainer/IndicatorHBox/IndicatorRight/IndicatorRightLabel
 @onready var detection_right_label: Label = $VBoxContainer/DetectionHBox/DetectionRight/DetectionRightLabel
@@ -61,17 +61,25 @@ func progress_detection_meter():
 	if(detection_count == 5):
 		lose_state()
 	
-	# update visual
+	# UPDATE VISUAL
 	detection_right_label.text = "[" + cumulative_detection_visual
 	for visual_count in ConfigGame.password_length-detection_count:
 		detection_right_label.text += " -"
 	detection_right_label.text += "]"
 
 func win_state():
+	print("cipher.gd, WIN")
 	if(passkey_progress_count == 5):
+		print(detection_count)
+		if(detection_count == 0):
+			Events.perfect_game.emit()
 		Events.victory_event.emit()
 	elif(passkey_progress_count >= 5):
-		print("[DEBUG, win_state(), cipher.gd] INVALID passkey_progress_count VALUE. >5 \nOBSERVE, RECORD, DEBUG")
+		print("[DEBUG, win_state(), cipher.gd] INVALID passkey_progress_count VALUE. (>5) \nOBSERVE, RECORD, DEBUG")
+
+func lose_state():
+	print("cipher.gd, LOSE")
+	Events.lose_event.emit()
 
 func restart():
 	print("Cipher restarting...")
@@ -86,8 +94,3 @@ func restart():
 	detection_right_label.text = "[- - - - -]"
 	
 	Events.cipher_ready_to_receive_passkey_actual.emit()
-
-func lose_state():
-	print("LOSE STATE.")
-	Events.lose_event.emit()
-	
