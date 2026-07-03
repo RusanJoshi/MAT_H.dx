@@ -1,0 +1,7 @@
+achievements
+* Easy - Beat a game on Easy (3x3)
+* Peasy - Beat a game on Medium (5x5)
+* Lemon - Beat a game on Hard (7x7)
+* Squeezy - Beat a game on Hardest (7x9)
+
+* What is wrong with you? - Adjust one of the dimensions to >=100

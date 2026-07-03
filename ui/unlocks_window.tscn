@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bccufiswsvkn8"]
+
+[ext_resource type="Script" path="res://scripts/unlocks_window.gd" id="1_v0qfg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55rgx"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="UnlocksWindow" type="Node2D"]
+script = ExtResource("1_v0qfg")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 474.0
+offset_bottom = 670.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_55rgx")

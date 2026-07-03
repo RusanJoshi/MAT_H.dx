@@ -7,9 +7,9 @@ extends Node
 # Minimums (TODO, might need to program further to make values <5 visually acceptable)
 # -vertDimen ?
 # -horiDimen ?
-# easy(3,3) medium(5,5), hard(7,7), hardest(9,7)
-var vertical_dimension = 5
+# easy(3,3) medium(5,5), hard(7,7), hardest(7,9)
 var horizontal_dimension = 5
+var vertical_dimension = 5
 var password_length = 5 # I don't think this is used anywhere meaningfully.
 
 var crt_shader_bool: bool = true

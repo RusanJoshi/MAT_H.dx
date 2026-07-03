@@ -13,10 +13,10 @@ func _ready():
 	print("custom_window_border.gd... loaded")
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
 
-func _process(delta):
-	if(Input.is_action_just_pressed("escape_key")):
-		get_tree().quit()
-		print("Program killed.")
+#func _process(delta):
+	#if(Input.is_action_just_pressed("escape_key")):
+		#get_tree().quit()
+		#print("Program killed.")
 	
 
 func _input(event):

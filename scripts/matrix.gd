@@ -2,9 +2,9 @@ extends Node2D
 
 
 @onready var vpasp: VariablePitchAudioStreamPlayer = $VPASP
-@onready var left_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/LeftShellPanel/LeftShellVBox
+@onready var left_shell_v_box: VBoxContainer = %LeftShellVBox
 @onready var inside_v_box: VBoxContainer = %InsideVBox
-@onready var right_shell_v_box: VBoxContainer = $FoundationPanel/HBoxContainer/RightShellPanel/RightShellVBox
+@onready var right_shell_v_box: VBoxContainer = %RightShellVBox
 @onready var flash_timer: Timer = $FlashTimer
 
 var occurrence_count_array: Array[Control] # holds occurrence_count objects
@@ -159,18 +159,26 @@ func lose_state():
 
 func restart():
 	print("Matrix restarting...")
+	occurrence_count_array.clear()
 	horizontal_partition_array.clear()
 	partitioned_cell_array.clear()
+	right_shell_array.clear()
 	passkey_full = ""
 	passkey_actual = ""
 	passkey_progress = 0
 	
+	for child in left_shell_v_box.get_children():
+		child.queue_free()
 	for child in inside_v_box.get_children():
+		child.queue_free()
+	for child in right_shell_v_box.get_children():
 		child.queue_free()
 	
 	partition_and_cells_setup()
 	passkey_setup()
+	occurrence_count_setup()
 	occurrence_count_update()
+	right_shell_setup()
 	
 	current_x_nav = 0
 	current_y_nav = 0

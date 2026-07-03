@@ -20,6 +20,7 @@ config/icon="res://assets/textures/mat4.png"
 ConfigGame="*res://scripts/config_game.gd"
 SoundLibrary="*res://scripts/sound_library.gd"
 Events="*res://scripts/events.gd"
+UIManager="*res://scripts/ui_manager.gd"
 
 [display]
 

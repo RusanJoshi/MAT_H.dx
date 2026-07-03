@@ -18,6 +18,10 @@ extends Node2D
 @onready var mo_2_highlight: Panel = %MO2Highlight
 @onready var mo_3_highlight: Panel = %MO3Highlight
 @onready var mo_4_highlight: Panel = %MO4Highlight
+@onready var menu_option_one_area_2d: Area2D = $MenuOptionOneArea2D
+@onready var menu_option_two_area_2d: Area2D = $MenuOptionTwoArea2D
+@onready var menu_option_three_area_2d: Area2D = $MenuOptionThreeArea2D
+@onready var menu_option_four_area_2d: Area2D = $MenuOptionFourArea2D
 @onready var rb_highlight: Panel = $ReturnButtonLabel/RBHighlight
 var moption_stylebox: StyleBoxFlat = load("res://ui/moption_highlight_test.tres")
 
@@ -81,7 +85,12 @@ var moption_functions_array: Array[Array] = [
 
 
 func _ready() -> void:
-	print("min_menu.gd... loaded")
+	print("mini_menu.gd... loaded")
+	
+	#UI
+	UIManager.lock_mini_menu.connect(lock_mini_menu)
+	UIManager.unlock_mini_menu.connect(unlock_mini_menu)
+	
 	blinking_cursor_timer.wait_time = default_visible_wait_time
 	menu_highlights_array = [mo_1_highlight, mo_2_highlight, mo_3_highlight, mo_4_highlight]
 	directory_path_array.append(DIR_PATH_CONST)
@@ -108,14 +117,12 @@ func _process(delta):
 			if(directory_int_x+1 <= current_dir_x_max):
 				menu_traversal(3)
 			else: print(str(directory_int_x+1) + " : " + str(current_dir_x_max))
-	if(Input.is_action_just_pressed("r_key")): #DEBUG
-		pass
 
 func on_first_focus():
 	menu_highlights_array[directory_int_y].visible = true
 	footer_label.text = update_footer_text()
 
-func remove_menu_highlights(): #Also adjust the moption highlight colors
+func remove_menu_highlights(): #Also adjusts the moption highlight colors
 	menu_highlights_array[directory_int_y].visible = false
 	moption_stylebox.bg_color = ConfigGame.cell_highlight_color
 	footer_label.text = current_dir_path + dir_path_end
@@ -227,10 +234,26 @@ func volume_moption_target():
 	print("\nVolume...")
 func difficulty_moption_target():
 	print("\nDifficulty...")
+	UIManager.global_toggle_pop_up_window.emit()
+	UIManager.open_difficulty_window.emit()
 func detection_meter_moption_target():
 	print("\nDetection Meter...")
 func crt_effect_moption_target():
 	print("\nCRT Effect...")
+
+func lock_mini_menu():
+	print("LOCKING")
+	menu_option_one_area_2d.visible = false
+	menu_option_two_area_2d.visible = false
+	menu_option_three_area_2d.visible = false
+	menu_option_four_area_2d.visible = false
+
+func unlock_mini_menu():
+	print("UNLOCKING")
+	menu_option_one_area_2d.visible = true
+	menu_option_two_area_2d.visible = true
+	menu_option_three_area_2d.visible = true
+	menu_option_four_area_2d.visible = true
 
 func _on_blinking_cursor_timer_timeout() -> void:
 	if(blinking_cursor.is_visible_in_tree()):

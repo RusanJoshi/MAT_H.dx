@@ -22,6 +22,9 @@ var cell_locked: bool = false
 func _ready():
 	Events.victory_event.connect(lock_cell)
 	Events.lose_event.connect(lock_cell)
+	#UI
+	UIManager.lock_cell.connect(lock_cell)
+	UIManager.unlock_cell.connect(unlock_cell)
 	
 	default_cell_stylebox.bg_color = Color.BLACK
 	default_label_settings.set_font(preload("res://fonts/Perfect DOS VGA 437 Win.ttf"))
