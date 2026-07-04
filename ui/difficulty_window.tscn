@@ -7,7 +7,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jyjr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hfbh"]
-bg_color = Color(0.0807833, 0.0807834, 0.0807833, 1)
+bg_color = Color(0.0562916, 0.0562916, 0.0562915, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_d3vm5"]
 font = ExtResource("2_0sgd1")
@@ -36,7 +36,7 @@ font = ExtResource("2_0sgd1")
 font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_qhgto"]
-line_spacing = 20.0
+line_spacing = 0.0
 font = ExtResource("2_0sgd1")
 font_size = 20
 
@@ -76,8 +76,9 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 40.0
+offset_top = -93.0
+offset_right = 192.0
+offset_bottom = -4.0
 grow_vertical = 0
 text = "log: vY-1 (13:22)
 log: vY-1 (13:22)
@@ -98,10 +99,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -76.5
-offset_top = -89.0
-offset_right = -1.5
-offset_bottom = -14.0
+offset_left = -74.5
+offset_top = -112.5
+offset_right = 0.5
+offset_bottom = -37.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1iywl")
@@ -114,7 +115,7 @@ offset_right = 75.0
 offset_bottom = 57.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "00"
+text = "[00]"
 label_settings = SubResource("LabelSettings_0hk45")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -125,10 +126,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_top = 43.0
-offset_right = 20.0
-offset_bottom = 74.0
+offset_left = -4.5
+offset_top = 18.0
+offset_right = 35.5
+offset_bottom = 49.0
 grow_horizontal = 2
 text = "x"
 label_settings = SubResource("LabelSettings_iuaee")
@@ -142,10 +143,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -2.5
-offset_top = -89.0
-offset_right = 72.5
-offset_bottom = -14.0
+offset_left = 22.5
+offset_top = -112.5
+offset_right = 97.5
+offset_bottom = -37.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1iywl")
@@ -162,7 +163,7 @@ offset_right = 4.0
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "00
+text = "[00]
 "
 label_settings = SubResource("LabelSettings_vx4np")
 horizontal_alignment = 1
@@ -176,10 +177,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -31.0
-offset_top = -32.5
-offset_right = 31.0
-offset_bottom = -9.5
+offset_left = 32.5
+offset_top = -58.5
+offset_right = 94.5
+offset_bottom = -35.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "debug"
@@ -188,15 +189,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AddXLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 49.0
-offset_top = 107.0
-offset_right = 94.0
-offset_bottom = 130.0
-text = "hX++"
+offset_top = 99.0
+offset_right = 68.0
+offset_bottom = 122.0
+text = "[hX++]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AddXPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/AddXLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -209,15 +214,19 @@ theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="MinXLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 49.0
-offset_top = 138.0
-offset_right = 94.0
-offset_bottom = 161.0
-text = "hX--"
+offset_top = 122.0
+offset_right = 68.0
+offset_bottom = 145.0
+text = "[hX--]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MinXPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/MinXLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -230,15 +239,20 @@ theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="AddYLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 127.0
-offset_top = 107.0
-offset_right = 172.0
-offset_bottom = 130.0
-text = "vY++"
+offset_left = 74.0
+offset_top = 99.0
+offset_right = 142.0
+offset_bottom = 122.0
+text = "[vY++]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AddYPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/AddYLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -251,15 +265,20 @@ theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="MinYLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 127.0
-offset_top = 138.0
-offset_right = 172.0
-offset_bottom = 161.0
-text = "vY--"
+offset_left = 74.0
+offset_top = 122.0
+offset_right = 142.0
+offset_bottom = 145.0
+text = "[vY--]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MinYPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/MinYLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -272,15 +291,20 @@ theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="SaveLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 87.0
-offset_top = 167.0
-offset_right = 132.0
-offset_bottom = 190.0
-text = "save"
+offset_left = -1.0
+offset_top = 160.0
+offset_right = 69.0
+offset_bottom = 185.0
+text = "[save]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SavePanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/SaveLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -292,16 +316,21 @@ mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
-[node name="SaveRestartLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+[node name="RestartLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
 layout_mode = 0
-offset_left = 23.0
-offset_top = 192.0
-offset_right = 203.0
-offset_bottom = 215.0
-text = "save and restart"
+offset_left = 74.0
+offset_top = 160.0
+offset_right = 144.0
+offset_bottom = 185.0
+text = "[exit]"
 label_settings = SubResource("LabelSettings_qhgto")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="SaveRestartPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/SaveRestartLabel"]
+[node name="RestartPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/RestartLabel"]
+unique_name_in_owner = true
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
