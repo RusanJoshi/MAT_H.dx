@@ -110,10 +110,10 @@ func _process(delta):
 		if(Input.is_action_just_pressed("down_key")):
 			if(directory_int_y+1 <= current_dir_y_max):
 				menu_traversal(1)
-		if(Input.is_action_just_pressed("left_key")):
+		if(Input.is_action_just_pressed("mini_menu_back")):
 			if(directory_int_x-1 >= current_dir_x_min):
 				menu_traversal(2)
-		if(Input.is_action_just_pressed("right_key")):
+		if(Input.is_action_just_pressed("mini_menu_forward")):
 			if(directory_int_x+1 <= current_dir_x_max):
 				menu_traversal(3)
 			else: print(str(directory_int_x+1) + " : " + str(current_dir_x_max))

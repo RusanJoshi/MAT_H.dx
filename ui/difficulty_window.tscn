@@ -67,25 +67,33 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="ConsolePanel" type="Panel" parent="ShinBackground/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4hfbh")
 
 [node name="ConsoleLabel" type="Label" parent="ShinBackground/HBoxContainer/ConsolePanel"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -93.0
-offset_right = 192.0
+offset_top = -24.0
+offset_right = 225.0
 offset_bottom = -4.0
 grow_vertical = 0
-text = "log: vY-1 (13:22)
-log: vY-1 (13:22)
-log: hx+1 (13:26)
-adj_dim: hx+1"
+text = "adj_dif()>>"
 label_settings = SubResource("LabelSettings_d3vm5")
 vertical_alignment = 2
+
+[node name="CloningLabel" type="Label" parent="ShinBackground/HBoxContainer/ConsolePanel"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "log
+log
+log"
 
 [node name="ControlPanel" type="Panel" parent="ShinBackground/HBoxContainer"]
 layout_mode = 2
@@ -316,7 +324,7 @@ mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
-[node name="RestartLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+[node name="ExitLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
 z_index = 1
 layout_mode = 0
 offset_left = 74.0
@@ -328,7 +336,7 @@ label_settings = SubResource("LabelSettings_qhgto")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/RestartLabel"]
+[node name="ExitPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/ExitLabel"]
 unique_name_in_owner = true
 visible = false
 z_index = -1
