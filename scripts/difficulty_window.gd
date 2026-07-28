@@ -1,8 +1,6 @@
 extends Node2D
-
+@onready var shin_background: Panel = $ShinBackground
 @onready var console_panel: Panel = %ConsolePanel
-
-#@onready var cloning_label: Label = $ShinBackground/HBoxContainer/ConsolePanel/CloningLabel
 @onready var console_label: Label = %ConsoleLabel
 @onready var hx_label: Label = %HXLabel
 @onready var vy_label: Label = %VYLabel
@@ -28,6 +26,8 @@ var cloning_label_settings: LabelSettings = LabelSettings.new()
 #MENU TRAVERSAL
 var menux: int = 0
 var menuy: int = 0
+var prev_menux: int
+var prev_menuy: int
 var min_menu: int = 0
 var max_menu_x: int = 1
 var max_menu_y: int = 2
@@ -43,7 +43,6 @@ func _ready() -> void:
 	cloning_label_settings.font = preload("res://fonts/Perfect DOS VGA 437 Win.ttf")
 	cloning_label_settings.font_size = 20
 	
-	#cloning_label.label_settings = cloning_label_settings
 	moption_stylebox.bg_color = ConfigGame.cell_highlight_color
 	
 	left_moptions = [add_x_panel, min_x_panel, save_panel]
@@ -110,8 +109,8 @@ func update_console_label():
 		console_label.text = default_text.insert(8,"exit")
 
 func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
-	var prev_menux = menux
-	var prev_menuy = menuy
+	prev_menux = menux
+	prev_menuy = menuy
 	menux += pMenuX
 	menuy += pMenuY
 	moptions_array[prev_menux][prev_menuy].visible = false
@@ -140,23 +139,26 @@ func confirmation():
 
 func increase_x():
 	current_horizontal_dimension += 1
-	create_log("X++")
+	create_log("h_X++")
 func decrease_x():
 	current_horizontal_dimension -= 1
+	create_log("h_X--")
 func increase_y():
 	current_vertical_dimension += 1
+	create_log("v_Y++")
 func decrease_y():
 	current_vertical_dimension -= 1
+	create_log("v_Y--")
 func save_difficulty():
 	print("saved and updated")
 	update_config_dimensions(current_horizontal_dimension, current_vertical_dimension)
 func exit():
 	kill_window()
-	UIManager.global_toggle_pop_up_window.emit()
+	UIManager.global_toggle_pop_up_shade.emit()
 
 func create_log(pString):
 	var log_cartridge: Label = Label.new()
-	var default_text: String = "log: "
+	var default_text: String = "adj_log: "
 	
 	log_cartridge.label_settings = cloning_label_settings
 	log_cartridge.text = default_text + pString
@@ -167,7 +169,83 @@ func create_log(pString):
 	
 	log_array.append(log_cartridge)
 	console_panel.add_child(log_cartridge)
+	if(log_array.size() > 10):
+		log_array[0].queue_free()
+		log_array.remove_at(0)
 
 func kill_window():
 	has_focus = false
 	self.queue_free()
+
+func _unhandled_input(event): #CLOSES THE WINDOW WHEN CLICKING OUT
+	if(event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and event.pressed):
+		var rect = shin_background.get_global_rect()
+		if(!rect.has_point(event.position)):
+			kill_window()
+			UIManager.global_toggle_pop_up_shade.emit()
+
+#ADD X
+func _on_add_x_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 0
+	menuy = 0
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_add_x_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_add_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()
+
+#MIN X
+func _on_min_x_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 0
+	menuy = 1
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_min_x_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_min_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()
+
+#ADD Y
+func _on_add_y_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 1
+	menuy = 0
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_add_y_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_add_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()
+
+#MIN Y
+func _on_min_y_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 1
+	menuy = 1
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_min_y_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_min_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()

@@ -7,7 +7,7 @@ func _ready() -> void:
 
 #emit: mini_menu.gd, difficulty_moption_target()
 #connected: main.gd
-signal global_toggle_pop_up_window
+signal global_toggle_pop_up_shade
 
 #emit: main.gd, toggle_pop_up_window()
 #connected: matrix_cell.gd
@@ -26,3 +26,4 @@ signal open_difficulty_window
 signal kill_difficulty_window
 signal show_difficulty_window
 signal hide_difficulty_window
+signal difficulty_window_self_destruct

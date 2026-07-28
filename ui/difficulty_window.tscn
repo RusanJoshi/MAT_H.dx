@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b73ytvm0yqcx6"]
+[gd_scene load_steps=18 format=3 uid="uid://b73ytvm0yqcx6"]
 
 [ext_resource type="Script" path="res://scripts/difficulty_window.gd" id="1_6et8o"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_0sgd1"]
@@ -40,6 +40,18 @@ line_spacing = 0.0
 font = ExtResource("2_0sgd1")
 font_size = 20
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3hw0i"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kgauo"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hs16g"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jmnk"]
+size = Vector2(65, 20)
+
 [node name="DifficultyWindow" type="Node2D"]
 z_index = 2
 script = ExtResource("1_6et8o")
@@ -49,6 +61,7 @@ offset_left = 137.0
 offset_top = 177.0
 offset_right = 364.0
 offset_bottom = 629.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2jyjr")
 
 [node name="ShinBackground" type="Panel" parent="."]
@@ -56,6 +69,7 @@ offset_left = 138.0
 offset_top = 178.0
 offset_right = 363.0
 offset_bottom = 628.0
+mouse_filter = 2
 
 [node name="HBoxContainer" type="VBoxContainer" parent="ShinBackground"]
 layout_mode = 1
@@ -64,12 +78,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="ConsolePanel" type="Panel" parent="ShinBackground/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4hfbh")
 
 [node name="ConsoleLabel" type="Label" parent="ShinBackground/HBoxContainer/ConsolePanel"]
@@ -86,18 +102,10 @@ text = "adj_dif()>>"
 label_settings = SubResource("LabelSettings_d3vm5")
 vertical_alignment = 2
 
-[node name="CloningLabel" type="Label" parent="ShinBackground/HBoxContainer/ConsolePanel"]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "log
-log
-log"
-
 [node name="ControlPanel" type="Panel" parent="ShinBackground/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_78phb")
 
 [node name="HXDisplay" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel"]
@@ -349,3 +357,44 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
+
+[node name="AddXArea2D" type="Area2D" parent="."]
+position = Vector2(171, 511)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AddXArea2D"]
+shape = SubResource("RectangleShape2D_3hw0i")
+metadata/_edit_lock_ = true
+
+[node name="MinXArea2D" type="Area2D" parent="."]
+position = Vector2(171, 534)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MinXArea2D"]
+shape = SubResource("RectangleShape2D_kgauo")
+metadata/_edit_lock_ = true
+
+[node name="AddYArea2D" type="Area2D" parent="."]
+position = Vector2(245, 511)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AddYArea2D"]
+shape = SubResource("RectangleShape2D_hs16g")
+metadata/_edit_lock_ = true
+
+[node name="MinYArea2D" type="Area2D" parent="."]
+position = Vector2(245, 534)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MinYArea2D"]
+shape = SubResource("RectangleShape2D_6jmnk")
+metadata/_edit_lock_ = true
+
+[connection signal="input_event" from="AddXArea2D" to="." method="_on_add_x_area_2d_input_event"]
+[connection signal="mouse_entered" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_exited"]
+[connection signal="input_event" from="MinXArea2D" to="." method="_on_min_x_area_2d_input_event"]
+[connection signal="mouse_entered" from="MinXArea2D" to="." method="_on_min_x_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="MinXArea2D" to="." method="_on_min_x_area_2d_mouse_exited"]
+[connection signal="input_event" from="AddYArea2D" to="." method="_on_add_y_area_2d_input_event"]
+[connection signal="mouse_entered" from="AddYArea2D" to="." method="_on_add_y_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="AddYArea2D" to="." method="_on_add_y_area_2d_mouse_exited"]
+[connection signal="input_event" from="MinYArea2D" to="." method="_on_min_y_area_2d_input_event"]
+[connection signal="mouse_entered" from="MinYArea2D" to="." method="_on_min_y_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="MinYArea2D" to="." method="_on_min_y_area_2d_mouse_exited"]

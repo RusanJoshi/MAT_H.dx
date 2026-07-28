@@ -234,7 +234,7 @@ func volume_moption_target():
 	print("\nVolume...")
 func difficulty_moption_target():
 	print("\nDifficulty...")
-	UIManager.global_toggle_pop_up_window.emit()
+	UIManager.global_toggle_pop_up_shade.emit()
 	UIManager.open_difficulty_window.emit()
 func detection_meter_moption_target():
 	print("\nDetection Meter...")
