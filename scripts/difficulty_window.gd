@@ -4,7 +4,7 @@ extends Node2D
 @onready var console_label: Label = %ConsoleLabel
 @onready var hx_label: Label = %HXLabel
 @onready var vy_label: Label = %VYLabel
-@onready var difficulty_level_label: Label = $ShinBackground/DifficultyLevelLabel
+@onready var difficulty_level_label: Label = %DifficultyLevelLabel
 
 @onready var add_x_panel: Panel = %AddXPanel
 @onready var min_x_panel: Panel = %MinXPanel
@@ -39,6 +39,7 @@ func _ready() -> void:
 	UIManager.kill_difficulty_window.connect(kill_window)
 	
 	update_dimensions_from_config()
+	update_difficulty_label()
 	
 	cloning_label_settings.font = preload("res://fonts/Perfect DOS VGA 437 Win.ttf")
 	cloning_label_settings.font_size = 20
@@ -71,7 +72,7 @@ func _process(delta):
 	
 	if(Input.is_action_just_pressed("escape_key")):
 		kill_window()
-		UIManager.global_toggle_pop_up_window.emit()
+		UIManager.global_toggle_pop_up_shade.emit()
 
 func update_dimensions_from_config():
 	current_horizontal_dimension = ConfigGame.horizontal_dimension
@@ -136,6 +137,7 @@ func confirmation():
 			save_difficulty()
 		elif(menux == 1):#EXIT DIFF. WINDOW
 			exit()
+	update_difficulty_label()
 
 func increase_x():
 	current_horizontal_dimension += 1
@@ -155,6 +157,22 @@ func save_difficulty():
 func exit():
 	kill_window()
 	UIManager.global_toggle_pop_up_shade.emit()
+
+
+func update_difficulty_label():
+	var nanometer_difficulty: int
+	nanometer_difficulty = (current_horizontal_dimension + current_vertical_dimension)
+	if(in_range(nanometer_difficulty, 6, 10)):
+		difficulty_level_label.text = str(nanometer_difficulty) + "nm easy"
+	elif(in_range(nanometer_difficulty, 10, 14)):
+		difficulty_level_label.text = str(nanometer_difficulty) + "nm medium"
+	elif(in_range(nanometer_difficulty, 14, 16)):
+		difficulty_level_label.text = str(nanometer_difficulty) + "nm hard"
+	elif(in_range(nanometer_difficulty, 16, 17)):
+		difficulty_level_label.text = str(nanometer_difficulty) + "nm hardest"
+
+func in_range(pValue: int, pMinRange: int, pMaxRange: int) -> bool:
+	return pMinRange <= pValue and pValue < pMaxRange
 
 func create_log(pString):
 	var log_cartridge: Label = Label.new()
@@ -177,7 +195,7 @@ func kill_window():
 	has_focus = false
 	self.queue_free()
 
-func _unhandled_input(event): #CLOSES THE WINDOW WHEN CLICKING OUT
+func _unhandled_input(event): #CLOSES THE WINDOW WHEN CLICKING OUTSIDE
 	if(event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
 	and event.pressed):
@@ -245,6 +263,38 @@ func _on_min_y_area_2d_mouse_entered() -> void:
 func _on_min_y_area_2d_mouse_exited() -> void:
 	moptions_array[menux][menuy].visible = false
 func _on_min_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()
+
+#SAVE
+func _on_save_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 0
+	menuy = 2
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_save_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_save_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				confirmation()
+
+#EXIT
+func _on_exit_area_2d_mouse_entered() -> void:
+	prev_menux = menux
+	prev_menuy = menuy
+	menux = 1
+	menuy = 2
+	moptions_array[prev_menux][prev_menuy].visible = false
+	moptions_array[menux][menuy].visible = true
+func _on_exit_area_2d_mouse_exited() -> void:
+	moptions_array[menux][menuy].visible = false
+func _on_exit_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:

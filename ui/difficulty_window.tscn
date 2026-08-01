@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b73ytvm0yqcx6"]
+[gd_scene load_steps=20 format=3 uid="uid://b73ytvm0yqcx6"]
 
 [ext_resource type="Script" path="res://scripts/difficulty_window.gd" id="1_6et8o"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_0sgd1"]
@@ -50,6 +50,12 @@ size = Vector2(65, 20)
 size = Vector2(65, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6jmnk"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lhtne"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k3sjn"]
 size = Vector2(65, 20)
 
 [node name="DifficultyWindow" type="Node2D"]
@@ -187,6 +193,7 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="DifficultyLevelLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -386,6 +393,20 @@ position = Vector2(245, 534)
 shape = SubResource("RectangleShape2D_6jmnk")
 metadata/_edit_lock_ = true
 
+[node name="SaveArea2D" type="Area2D" parent="."]
+position = Vector2(171, 573)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SaveArea2D"]
+shape = SubResource("RectangleShape2D_lhtne")
+metadata/_edit_lock_ = true
+
+[node name="ExitArea2D" type="Area2D" parent="."]
+position = Vector2(246, 573)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitArea2D"]
+shape = SubResource("RectangleShape2D_k3sjn")
+metadata/_edit_lock_ = true
+
 [connection signal="input_event" from="AddXArea2D" to="." method="_on_add_x_area_2d_input_event"]
 [connection signal="mouse_entered" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_exited"]
@@ -398,3 +419,9 @@ metadata/_edit_lock_ = true
 [connection signal="input_event" from="MinYArea2D" to="." method="_on_min_y_area_2d_input_event"]
 [connection signal="mouse_entered" from="MinYArea2D" to="." method="_on_min_y_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="MinYArea2D" to="." method="_on_min_y_area_2d_mouse_exited"]
+[connection signal="input_event" from="SaveArea2D" to="." method="_on_save_area_2d_input_event"]
+[connection signal="mouse_entered" from="SaveArea2D" to="." method="_on_save_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="SaveArea2D" to="." method="_on_save_area_2d_mouse_exited"]
+[connection signal="input_event" from="ExitArea2D" to="." method="_on_exit_area_2d_input_event"]
+[connection signal="mouse_entered" from="ExitArea2D" to="." method="_on_exit_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="ExitArea2D" to="." method="_on_exit_area_2d_mouse_exited"]
