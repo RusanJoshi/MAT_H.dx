@@ -32,6 +32,12 @@ var min_menu: int = 0
 var max_menu_x: int = 1
 var max_menu_y: int = 2
 var moptions_array: Array[Array]
+var broken_chains: bool = false
+var x_dim_chains: bool = false
+var y_dim_chains: bool = false
+
+#MISC
+var nanometer_difficulty_reverse_array: Array[int] = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6]
 
 
 func _ready() -> void:
@@ -42,7 +48,7 @@ func _ready() -> void:
 	update_difficulty_label()
 	
 	cloning_label_settings.font = preload("res://fonts/Perfect DOS VGA 437 Win.ttf")
-	cloning_label_settings.font_size = 20
+	cloning_label_settings.font_size = 16
 	
 	moption_stylebox.bg_color = ConfigGame.cell_highlight_color
 	
@@ -87,27 +93,60 @@ func update_config_dimensions(pNewHorizontal: int = current_horizontal_dimension
 	ConfigGame.horizontal_dimension = pNewHorizontal
 	ConfigGame.vertical_dimension = pNewVertical
 
+func update_console_label(): #also changes the hx/vy highlight label colors
+	var default_text: String = "adj_sett()>>"
+	
+	if(menux == 0 and menuy == 0):
+		console_label.text = default_text.insert(9,"hX++")
+		highlight_dimension_label(1)
+	elif(menux == 0 and menuy == 1):
+		console_label.text = default_text.insert(9,"hX--")
+		highlight_dimension_label(1)
+	elif(menux == 1 and menuy == 0):
+		console_label.text = default_text.insert(9,"vY++")
+		highlight_dimension_label(2)
+	elif(menux == 1 and menuy == 1):
+		console_label.text = default_text.insert(9,"vY--")
+		highlight_dimension_label(2)
+	elif(menux == 0 and menuy == 2):
+		console_label.text = default_text.insert(9,"save")
+	elif(menux == 1 and menuy == 2):
+		console_label.text = default_text.insert(9,"exit")
+
 func update_dimensions_labels():
 	var hx_bracket: String = "[]"
 	var vy_bracket: String = "[]"
 	hx_label.text = hx_bracket.insert(1, "%02d" % current_horizontal_dimension)
 	vy_label.text = vy_bracket.insert(1, "%02d" % current_vertical_dimension)
 
-func update_console_label():
-	var default_text: String = "adj_dif()>>"
+func update_difficulty_label():
+	var nanometer_difficulty: int
+	var reversed_difficulty: int
+	var reverse_index: int
 	
-	if(menux == 0 and menuy == 0):
-		console_label.text = default_text.insert(8,"hX++")
-	elif(menux == 0 and menuy == 1):
-		console_label.text = default_text.insert(8,"hX--")
-	elif(menux == 1 and menuy == 0):
-		console_label.text = default_text.insert(8,"vY++")
-	elif(menux == 1 and menuy == 1):
-		console_label.text = default_text.insert(8,"vY--")
-	elif(menux == 0 and menuy == 2):
-		console_label.text = default_text.insert(8,"save")
-	elif(menux == 1 and menuy == 2):
-		console_label.text = default_text.insert(8,"exit")
+	#print("hDIM: " + str(current_horizontal_dimension) + "\nvDIM: " + str(current_vertical_dimension))
+	nanometer_difficulty = (current_horizontal_dimension + current_vertical_dimension)
+	if(nanometer_difficulty > 3 and nanometer_difficulty <= 16):
+		reverse_index = nanometer_difficulty - 6
+		reversed_difficulty = nanometer_difficulty_reverse_array[reverse_index]
+	
+	if(in_range(reversed_difficulty, 13, 16)):
+		difficulty_level_label.text = str(reversed_difficulty) + "nm easy"
+	elif(in_range(reversed_difficulty, 9, 12)):
+		difficulty_level_label.text = str(reversed_difficulty) + "nm medium"
+	elif(in_range(reversed_difficulty, 7, 8)):
+		difficulty_level_label.text = str(reversed_difficulty) + "nm hard"
+	elif(in_range(reversed_difficulty, 5, 6)):
+		difficulty_level_label.text = str(reversed_difficulty) + "nm hardest"
+	else:
+		difficulty_level_label.text = "?? nm"
+
+func update_hover_highlight(pX: int, pY: int):
+	for y_index in right_moptions.size():
+		for x_index in left_moptions.size()-1: #Investigate why this is (if you care)
+			moptions_array[x_index][y_index].visible = false
+	
+	moptions_array[pX][pY].visible = true
 
 func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
 	prev_menux = menux
@@ -119,7 +158,7 @@ func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
 	
 	update_console_label()
 
-func confirmation():
+func confirmation(): #[!] also updates difficulty label
 	if(menuy == 0):
 		if(menux == 0):#INCREASE X-dimension
 			increase_x()
@@ -137,6 +176,7 @@ func confirmation():
 			save_difficulty()
 		elif(menux == 1):#EXIT DIFF. WINDOW
 			exit()
+	
 	update_difficulty_label()
 
 func increase_x():
@@ -158,25 +198,9 @@ func exit():
 	kill_window()
 	UIManager.global_toggle_pop_up_shade.emit()
 
-
-func update_difficulty_label():
-	var nanometer_difficulty: int
-	nanometer_difficulty = (current_horizontal_dimension + current_vertical_dimension)
-	if(in_range(nanometer_difficulty, 6, 10)):
-		difficulty_level_label.text = str(nanometer_difficulty) + "nm easy"
-	elif(in_range(nanometer_difficulty, 10, 14)):
-		difficulty_level_label.text = str(nanometer_difficulty) + "nm medium"
-	elif(in_range(nanometer_difficulty, 14, 16)):
-		difficulty_level_label.text = str(nanometer_difficulty) + "nm hard"
-	elif(in_range(nanometer_difficulty, 16, 17)):
-		difficulty_level_label.text = str(nanometer_difficulty) + "nm hardest"
-
-func in_range(pValue: int, pMinRange: int, pMaxRange: int) -> bool:
-	return pMinRange <= pValue and pValue < pMaxRange
-
 func create_log(pString):
 	var log_cartridge: Label = Label.new()
-	var default_text: String = "adj_log: "
+	var default_text: String = "upd_log: "
 	
 	log_cartridge.label_settings = cloning_label_settings
 	log_cartridge.text = default_text + pString
@@ -190,6 +214,24 @@ func create_log(pString):
 	if(log_array.size() > 10):
 		log_array[0].queue_free()
 		log_array.remove_at(0)
+
+func highlight_dimension_label(pLabel: int = 0):
+	if(pLabel == 1):
+		hx_label.modulate = Color.RED
+		vy_label.modulate = Color.WHITE
+	elif(pLabel == 2):
+		vy_label.modulate = Color.RED
+		hx_label.modulate = Color.WHITE
+	else:
+		hx_label.modulate = Color.WHITE
+		vy_label.modulate = Color.WHITE
+
+func in_range(pValue: int, pMinRange: int, pMaxRange: int) -> bool:
+	return pMaxRange >= pValue and pValue >= pMinRange
+
+func dimension_chains():
+	#the intention is to create a minimum limit of 3x3 and maximum of 7x9/9x7
+	pass
 
 func kill_window():
 	has_focus = false
@@ -210,10 +252,10 @@ func _on_add_x_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 0
 	menuy = 0
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
+	highlight_dimension_label(1)
 func _on_add_x_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_add_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -226,10 +268,10 @@ func _on_min_x_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 0
 	menuy = 1
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
+	highlight_dimension_label(1)
 func _on_min_x_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_min_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -242,10 +284,10 @@ func _on_add_y_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 1
 	menuy = 0
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
+	highlight_dimension_label(2)
 func _on_add_y_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_add_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -258,10 +300,10 @@ func _on_min_y_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 1
 	menuy = 1
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
+	highlight_dimension_label(2)
 func _on_min_y_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_min_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -274,10 +316,9 @@ func _on_save_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 0
 	menuy = 2
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
 func _on_save_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_save_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -290,10 +331,9 @@ func _on_exit_area_2d_mouse_entered() -> void:
 	prev_menuy = menuy
 	menux = 1
 	menuy = 2
-	moptions_array[prev_menux][prev_menuy].visible = false
-	moptions_array[menux][menuy].visible = true
+	update_hover_highlight(menux, menuy)
 func _on_exit_area_2d_mouse_exited() -> void:
-	moptions_array[menux][menuy].visible = false
+	pass
 func _on_exit_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:

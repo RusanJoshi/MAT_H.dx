@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b73ytvm0yqcx6"]
+[gd_scene load_steps=23 format=3 uid="uid://b73ytvm0yqcx6"]
 
 [ext_resource type="Script" path="res://scripts/difficulty_window.gd" id="1_6et8o"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_0sgd1"]
@@ -10,8 +10,8 @@
 bg_color = Color(0.0562916, 0.0562916, 0.0562915, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_d3vm5"]
+line_spacing = 0.0
 font = ExtResource("2_0sgd1")
-font_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78phb"]
 bg_color = Color(0, 0, 0, 1)
@@ -39,6 +39,21 @@ font_size = 22
 line_spacing = 0.0
 font = ExtResource("2_0sgd1")
 font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_5qxxy"]
+line_spacing = 0.0
+font = ExtResource("2_0sgd1")
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_rev7s"]
+line_spacing = 0.0
+font = ExtResource("2_0sgd1")
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_ntwfc"]
+line_spacing = 0.0
+font = ExtResource("2_0sgd1")
+font_size = 14
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3hw0i"]
 size = Vector2(65, 20)
@@ -104,7 +119,7 @@ offset_top = -24.0
 offset_right = 225.0
 offset_bottom = -4.0
 grow_vertical = 0
-text = "adj_dif()>>"
+text = "adj_sett()>>"
 label_settings = SubResource("LabelSettings_d3vm5")
 vertical_alignment = 2
 
@@ -200,9 +215,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 32.5
+offset_left = -15.5
 offset_top = -58.5
-offset_right = 94.5
+offset_right = 46.5
 offset_bottom = -35.5
 grow_horizontal = 2
 grow_vertical = 2
@@ -363,6 +378,70 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("3_8aj8a")
+metadata/_edit_lock_ = true
+
+[node name="Base16Dif" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
+layout_mode = 0
+offset_left = 155.0
+offset_top = 100.0
+offset_right = 223.0
+offset_bottom = 123.0
+text = "[Bx16]"
+label_settings = SubResource("LabelSettings_5qxxy")
+
+[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base16Dif"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Base36Dif" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+z_index = 1
+layout_mode = 0
+offset_left = 155.0
+offset_top = 121.0
+offset_right = 223.0
+offset_bottom = 144.0
+text = "[Bx36]"
+label_settings = SubResource("LabelSettings_rev7s")
+
+[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base36Dif"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="ToolTipLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 195.0
+offset_right = 88.0
+offset_bottom = 218.0
+text = "[!]_increase_x_dimension"
+label_settings = SubResource("LabelSettings_ntwfc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/ToolTipLabel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [node name="AddXArea2D" type="Area2D" parent="."]
