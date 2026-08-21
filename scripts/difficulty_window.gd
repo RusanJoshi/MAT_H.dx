@@ -33,8 +33,10 @@ var max_menu_x: int = 1
 var max_menu_y: int = 2
 var moptions_array: Array[Array]
 var broken_chains: bool = false
-var x_dim_chains: bool = false
-var y_dim_chains: bool = false
+var x_min_chain: int = 3
+var x_max_chain: int = 9
+var y_min_chain: int = 3
+var y_max_chain: int = 9
 
 #MISC
 var nanometer_difficulty_reverse_array: Array[int] = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6]
@@ -57,6 +59,7 @@ func _ready() -> void:
 	moptions_array = [left_moptions, right_moptions]
 	
 	moptions_array[0][0].visible = true
+	highlight_dimension_label(1)
 	has_focus = true
 
 func _process(delta):
@@ -165,6 +168,7 @@ func confirmation(): #[!] also updates difficulty label
 		elif(menux == 1):#DECREASE X-dimension
 			increase_y()
 		update_dimensions_labels()
+		dimension_chains()
 	elif(menuy == 1):
 		if(menux == 0):#INCREASE Y-dimension
 			decrease_x()
@@ -180,17 +184,21 @@ func confirmation(): #[!] also updates difficulty label
 	update_difficulty_label()
 
 func increase_x():
-	current_horizontal_dimension += 1
-	create_log("h_X++")
+	if(current_horizontal_dimension+1 <= x_max_chain):
+		current_horizontal_dimension += 1
+		create_log("h_X++")
 func decrease_x():
-	current_horizontal_dimension -= 1
-	create_log("h_X--")
+	if(current_horizontal_dimension-1 >= x_min_chain):
+		current_horizontal_dimension -= 1
+		create_log("h_X--")
 func increase_y():
-	current_vertical_dimension += 1
-	create_log("v_Y++")
+	if(current_vertical_dimension+1 <= y_max_chain):
+		current_vertical_dimension += 1
+		create_log("v_Y++")
 func decrease_y():
-	current_vertical_dimension -= 1
-	create_log("v_Y--")
+	if(current_vertical_dimension-1 >= y_min_chain):
+		current_vertical_dimension -= 1
+		create_log("v_Y--")
 func save_difficulty():
 	print("saved and updated")
 	update_config_dimensions(current_horizontal_dimension, current_vertical_dimension)
@@ -231,9 +239,19 @@ func in_range(pValue: int, pMinRange: int, pMaxRange: int) -> bool:
 
 func dimension_chains():
 	#the intention is to create a minimum limit of 3x3 and maximum of 7x9/9x7
-	pass
+	if(current_horizontal_dimension == 9):
+		print("[DEBUG, dimension_chains(), IF-S-1]")
+		y_max_chain = 7
+	elif(current_vertical_dimension == 9):
+		print("[DEBUG, dimension_chains(), ELIF-S-2]")
+		x_max_chain = 7
+	else:
+		print("[DEBUG, dimension_chains(), ELSE-S-3]")
+		x_max_chain = 9
+		y_max_chain = 9
 
 func kill_window():
+	print("x: " + str(current_horizontal_dimension) + ", y: " + str(current_vertical_dimension))
 	has_focus = false
 	self.queue_free()
 
@@ -246,6 +264,7 @@ func _unhandled_input(event): #CLOSES THE WINDOW WHEN CLICKING OUTSIDE
 			kill_window()
 			UIManager.global_toggle_pop_up_shade.emit()
 
+#MOUSE CONROLS // MOUSE CONTROLS // MOUSE CONTROLS // MOUSE CONTROLS // MOUSE CONTROLS
 #ADD X
 func _on_add_x_area_2d_mouse_entered() -> void:
 	prev_menux = menux
