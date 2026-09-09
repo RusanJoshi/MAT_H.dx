@@ -390,8 +390,10 @@ offset_bottom = 123.0
 text = "[Bx16]"
 label_settings = SubResource("LabelSettings_5qxxy")
 
-[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base16Dif"]
+[node name="B16Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base16Dif"]
+unique_name_in_owner = true
 visible = false
+z_index = -1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -399,20 +401,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="Base36Dif" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+unique_name_in_owner = true
 z_index = 1
 layout_mode = 0
 offset_left = 155.0
-offset_top = 121.0
+offset_top = 122.0
 offset_right = 223.0
-offset_bottom = 144.0
+offset_bottom = 145.0
 text = "[Bx36]"
 label_settings = SubResource("LabelSettings_rev7s")
 
-[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base36Dif"]
+[node name="B36Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/Base36Dif"]
+unique_name_in_owner = true
 visible = false
+z_index = -1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -420,6 +426,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="ToolTipLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
@@ -433,7 +440,8 @@ label_settings = SubResource("LabelSettings_ntwfc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/ToolTipLabel"]
+[node name="ToolTipPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/ToolTipLabel"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15

@@ -1,4 +1,5 @@
 extends Node2D
+@export var has_focus: bool
 @onready var shin_background: Panel = $ShinBackground
 @onready var console_panel: Panel = %ConsolePanel
 @onready var console_label: Label = %ConsoleLabel
@@ -12,8 +13,10 @@ extends Node2D
 @onready var min_y_panel: Panel = %MinYPanel
 @onready var save_panel: Panel = %SavePanel
 @onready var exit_panel: Panel = %ExitPanel
-
-@export var has_focus: bool
+@onready var b_16_panel: Panel = %B16Panel
+@onready var b_36_panel: Panel = %B36Panel
+@onready var base_36_dif: Label = %Base36Dif
+@onready var tool_tip_panel: Panel = %ToolTipPanel
 
 var current_horizontal_dimension: int
 var current_vertical_dimension: int
@@ -38,6 +41,12 @@ var x_max_chain: int = 9
 var y_min_chain: int = 3
 var y_max_chain: int = 9
 
+#BASE SWITCHING
+var current_base: int = ConfigGame.base_configure
+var base_unlocked: bool = false
+#var base_unlocked: bool = true
+var base_highlight_array: Array[Panel]
+
 #MISC
 var nanometer_difficulty_reverse_array: Array[int] = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6]
 
@@ -57,9 +66,14 @@ func _ready() -> void:
 	left_moptions = [add_x_panel, min_x_panel, save_panel]
 	right_moptions = [add_y_panel, min_y_panel, exit_panel]
 	moptions_array = [left_moptions, right_moptions]
+	base_highlight_array = [b_16_panel, b_36_panel]
 	
-	moptions_array[0][0].visible = true
+	#highlights
 	highlight_dimension_label(1)
+	moptions_array[0][0].visible = true
+	base_highlight_array[current_base].visible = true
+	if(!base_unlocked):
+		base_36_dif.modulate = Color(1,1,1,0.25)
 	has_focus = true
 
 func _process(delta):
@@ -78,6 +92,11 @@ func _process(delta):
 				menu_traversal(1,0)
 		if(Input.is_action_just_pressed("spacebar_key")):
 			confirmation()
+		if(base_unlocked):
+			if(Input.is_action_just_pressed("tab_key")):
+				if(current_base == 0):
+					update_base(1)
+				else: update_base(0)
 	
 	if(Input.is_action_just_pressed("escape_key")):
 		kill_window()
@@ -151,6 +170,16 @@ func update_hover_highlight(pX: int, pY: int):
 	
 	moptions_array[pX][pY].visible = true
 
+func update_base(pConfigure: int):
+	current_base = pConfigure
+	
+	if(current_base == 0):
+		b_16_panel.visible = true
+		b_36_panel.visible = false
+	else:
+		b_16_panel.visible = false
+		b_36_panel.visible = true
+
 func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
 	prev_menux = menux
 	prev_menuy = menuy
@@ -202,6 +231,7 @@ func decrease_y():
 func save_difficulty():
 	print("saved and updated")
 	update_config_dimensions(current_horizontal_dimension, current_vertical_dimension)
+	ConfigGame.base_configure = current_base
 func exit():
 	kill_window()
 	UIManager.global_toggle_pop_up_shade.emit()
