@@ -1,5 +1,6 @@
 extends Node2D
 @export var has_focus: bool
+@onready var vpasp: VariablePitchAudioStreamPlayer = $VPASP
 @onready var shin_background: Panel = $ShinBackground
 @onready var console_panel: Panel = %ConsolePanel
 @onready var console_label: Label = %ConsoleLabel
@@ -43,8 +44,8 @@ var y_max_chain: int = 9
 
 #BASE SWITCHING
 var current_base: int = ConfigGame.base_configure
-var base_unlocked: bool = false
-#var base_unlocked: bool = true
+#var base_unlocked: bool = false
+var base_unlocked: bool = true
 var base_highlight_array: Array[Panel]
 
 #MISC
@@ -72,8 +73,8 @@ func _ready() -> void:
 	highlight_dimension_label(1)
 	moptions_array[0][0].visible = true
 	base_highlight_array[current_base].visible = true
-	if(!base_unlocked):
-		base_36_dif.modulate = Color(1,1,1,0.25)
+	if(base_unlocked):
+		base_36_dif.modulate = Color(1,1,1,1)
 	has_focus = true
 
 func _process(delta):
@@ -180,6 +181,9 @@ func update_base(pConfigure: int):
 		b_16_panel.visible = false
 		b_36_panel.visible = true
 
+func update_tool_tip_label():
+	pass
+
 func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
 	prev_menux = menux
 	prev_menuy = menuy
@@ -205,8 +209,9 @@ func confirmation(): #[!] also updates difficulty label
 			decrease_y()
 		update_dimensions_labels()
 	elif(menuy == 2):
-		if(menux == 0):#SAVE DIMENSIONS
+		if(menux == 0):#SAVE CONFIGURATION
 			save_difficulty()
+			ConfigGame.base_configure = current_base
 		elif(menux == 1):#EXIT DIFF. WINDOW
 			exit()
 	
@@ -280,6 +285,14 @@ func dimension_chains():
 		x_max_chain = 9
 		y_max_chain = 9
 
+func play_directional_key_sound():
+	vpasp.stream = SoundLibrary.keypress_directional[randi_range(0,7)]
+	vpasp.play()
+
+func play_confirmation_key_sound():
+	vpasp.stream = SoundLibrary.keypress_confirmation[randi_range(0,4)]
+	vpasp.play()
+
 func kill_window():
 	print("x: " + str(current_horizontal_dimension) + ", y: " + str(current_vertical_dimension))
 	has_focus = false
@@ -297,6 +310,7 @@ func _unhandled_input(event): #CLOSES THE WINDOW WHEN CLICKING OUTSIDE
 #MOUSE CONROLS // MOUSE CONTROLS // MOUSE CONTROLS // MOUSE CONTROLS // MOUSE CONTROLS
 #ADD X
 func _on_add_x_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 0
@@ -309,10 +323,12 @@ func _on_add_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
 
 #MIN X
 func _on_min_x_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 0
@@ -325,10 +341,12 @@ func _on_min_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
 
 #ADD Y
 func _on_add_y_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 1
@@ -341,10 +359,12 @@ func _on_add_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
 
 #MIN Y
 func _on_min_y_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 1
@@ -357,10 +377,12 @@ func _on_min_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
 
 #SAVE
 func _on_save_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 0
@@ -372,10 +394,12 @@ func _on_save_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
 
 #EXIT
 func _on_exit_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
 	prev_menux = menux
 	prev_menuy = menuy
 	menux = 1
@@ -387,4 +411,33 @@ func _on_exit_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				play_confirmation_key_sound()
 				confirmation()
+
+#BASE16
+func _on_base_16_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
+	b_16_panel.visible = true
+	b_36_panel.visible = false
+func _on_base_16_area_2d_mouse_exited() -> void:
+	b_16_panel.visible = false
+func _on_base_16_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				play_confirmation_key_sound()
+				update_base(0)
+
+#BASE36
+func _on_base_36_area_2d_mouse_entered() -> void:
+	play_directional_key_sound()
+	b_16_panel.visible = false
+	b_36_panel.visible = true
+func _on_base_36_area_2d_mouse_exited() -> void:
+	b_36_panel.visible = false
+func _on_base_36_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				play_confirmation_key_sound()
+				update_base(1)

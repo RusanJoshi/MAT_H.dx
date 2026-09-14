@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://b73ytvm0yqcx6"]
+[gd_scene load_steps=26 format=3 uid="uid://b73ytvm0yqcx6"]
 
 [ext_resource type="Script" path="res://scripts/difficulty_window.gd" id="1_6et8o"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_0sgd1"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="2_vunyw"]
 [ext_resource type="StyleBox" uid="uid://dd1gamm6jkldw" path="res://ui/moption_highlight_test.tres" id="3_8aj8a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jyjr"]
@@ -73,9 +74,18 @@ size = Vector2(65, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k3sjn"]
 size = Vector2(65, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mea0d"]
+size = Vector2(65, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emk84"]
+size = Vector2(65, 20)
+
 [node name="DifficultyWindow" type="Node2D"]
 z_index = 2
 script = ExtResource("1_6et8o")
+
+[node name="VPASP" type="AudioStreamPlayer" parent="."]
+script = ExtResource("2_vunyw")
 
 [node name="FauxBorder" type="Panel" parent="."]
 offset_left = 137.0
@@ -406,6 +416,7 @@ metadata/_edit_lock_ = true
 
 [node name="Base36Dif" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.156863)
 z_index = 1
 layout_mode = 0
 offset_left = 155.0
@@ -494,6 +505,20 @@ position = Vector2(246, 573)
 shape = SubResource("RectangleShape2D_k3sjn")
 metadata/_edit_lock_ = true
 
+[node name="Base16Area2D" type="Area2D" parent="."]
+position = Vector2(326, 511)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base16Area2D"]
+shape = SubResource("RectangleShape2D_mea0d")
+metadata/_edit_lock_ = true
+
+[node name="Base36Area2D" type="Area2D" parent="."]
+position = Vector2(326, 534)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base36Area2D"]
+shape = SubResource("RectangleShape2D_emk84")
+metadata/_edit_lock_ = true
+
 [connection signal="input_event" from="AddXArea2D" to="." method="_on_add_x_area_2d_input_event"]
 [connection signal="mouse_entered" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="AddXArea2D" to="." method="_on_add_x_area_2d_mouse_exited"]
@@ -512,3 +537,9 @@ metadata/_edit_lock_ = true
 [connection signal="input_event" from="ExitArea2D" to="." method="_on_exit_area_2d_input_event"]
 [connection signal="mouse_entered" from="ExitArea2D" to="." method="_on_exit_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="ExitArea2D" to="." method="_on_exit_area_2d_mouse_exited"]
+[connection signal="input_event" from="Base16Area2D" to="." method="_on_base_16_area_2d_input_event"]
+[connection signal="mouse_entered" from="Base16Area2D" to="." method="_on_base_16_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Base16Area2D" to="." method="_on_base_16_area_2d_mouse_exited"]
+[connection signal="input_event" from="Base36Area2D" to="." method="_on_base_36_area_2d_input_event"]
+[connection signal="mouse_entered" from="Base36Area2D" to="." method="_on_base_36_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Base36Area2D" to="." method="_on_base_36_area_2d_mouse_exited"]
