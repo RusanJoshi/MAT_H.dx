@@ -240,6 +240,7 @@ func detection_meter_moption_target():
 	print("\nDetection Meter...")
 func crt_effect_moption_target():
 	print("\nCRT Effect...")
+	UIManager.toggle_crt_effect.emit()
 
 func lock_mini_menu():
 	print("LOCKING")

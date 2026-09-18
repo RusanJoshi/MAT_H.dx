@@ -148,6 +148,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_2l060")
 [node name="custom_window_border" parent="." instance=ExtResource("3_ct3fv")]
 
 [node name="CRTShader" parent="." instance=ExtResource("4_rfrf3")]
+unique_name_in_owner = true
 
 [node name="Header" type="Panel" parent="."]
 offset_left = 12.0

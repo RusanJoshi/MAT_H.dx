@@ -441,6 +441,7 @@ theme_override_styles/panel = ExtResource("3_8aj8a")
 metadata/_edit_lock_ = true
 
 [node name="ToolTipLabel" type="Label" parent="ShinBackground/HBoxContainer/ControlPanel"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 9.0
 offset_top = 195.0
@@ -452,7 +453,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ToolTipPanel" type="Panel" parent="ShinBackground/HBoxContainer/ControlPanel/ToolTipLabel"]
-unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15

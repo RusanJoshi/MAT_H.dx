@@ -12,6 +12,7 @@ var horizontal_dimension = 5
 var vertical_dimension = 5
 var password_length = 5 # I don't think this is used anywhere meaningfully.
 var base_configure: int = 0
+var base_unlocked: bool = false
 
 var crt_shader_bool: bool = true
 var cell_highlight_color: Color = Color.DARK_SLATE_GRAY

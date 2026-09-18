@@ -17,13 +17,20 @@ signal unlock_cell
 signal lock_mini_menu
 signal unlock_mini_menu
 
+#UNLOCKS WINDOW
 signal open_unlocks_window
 signal kill_unlocks_window
 signal show_unlocks_window
 signal hide_unlocks_window
 
+#DIFFICULTY WINDOW
 signal open_difficulty_window
 signal kill_difficulty_window
 signal show_difficulty_window
 signal hide_difficulty_window
 signal difficulty_window_self_destruct
+
+#CRT TOGGLE
+#emit: minimenu.gd, crt_effect_moption_target()
+#connected: main.gd
+signal toggle_crt_effect

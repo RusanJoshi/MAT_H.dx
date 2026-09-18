@@ -20,6 +20,8 @@ extends Node2D
 var current_pop_up_window: Node2D
 var unlocks_window: PackedScene = preload("res://ui/unlocks_window.tscn")
 var difficulty_window: PackedScene = preload("res://ui/difficulty_window.tscn")
+@onready var crt_shader: CanvasLayer = %CRTShader
+
 
 #focus (false = mat, true = mini menu)
 var focus_boolean: bool = false
@@ -36,6 +38,7 @@ func _ready():
 	UIManager.global_toggle_pop_up_shade.connect(toggle_pop_up_shade)
 	UIManager.open_unlocks_window.connect(open_unlocks_window)
 	UIManager.open_difficulty_window.connect(open_difficulty_window)
+	UIManager.toggle_crt_effect.connect(toggle_crt_effect)
 	
 	#END GAME
 	Events.victory_event.connect(end_game_state.bind(true))
@@ -81,6 +84,10 @@ func open_difficulty_window():
 	var difficulty_window_cartridge = difficulty_window.instantiate()
 	current_pop_up_window = difficulty_window_cartridge
 	add_child(current_pop_up_window)
+
+func toggle_crt_effect():
+	crt_shader.visible = !ConfigGame.crt_shader_bool
+	ConfigGame.crt_shader_bool = crt_shader.visible
 
 func update_focus():
 	if(!focus_boolean):

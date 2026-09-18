@@ -17,7 +17,8 @@ extends Node2D
 @onready var b_16_panel: Panel = %B16Panel
 @onready var b_36_panel: Panel = %B36Panel
 @onready var base_36_dif: Label = %Base36Dif
-@onready var tool_tip_panel: Panel = %ToolTipPanel
+@onready var tool_tip_label: Label = %ToolTipLabel
+
 
 var current_horizontal_dimension: int
 var current_vertical_dimension: int
@@ -44,8 +45,7 @@ var y_max_chain: int = 9
 
 #BASE SWITCHING
 var current_base: int = ConfigGame.base_configure
-#var base_unlocked: bool = false
-var base_unlocked: bool = true
+var base_unlocked: bool = ConfigGame.base_unlocked
 var base_highlight_array: Array[Panel]
 
 #MISC
@@ -121,20 +121,26 @@ func update_console_label(): #also changes the hx/vy highlight label colors
 	
 	if(menux == 0 and menuy == 0):
 		console_label.text = default_text.insert(9,"hX++")
+		update_tool_tip_label("[!]_INCREASE_x_dimension")
 		highlight_dimension_label(1)
 	elif(menux == 0 and menuy == 1):
 		console_label.text = default_text.insert(9,"hX--")
+		update_tool_tip_label("[!]_DECREASE_x_dimension")
 		highlight_dimension_label(1)
 	elif(menux == 1 and menuy == 0):
 		console_label.text = default_text.insert(9,"vY++")
+		update_tool_tip_label("[!]_INCREASE_y_dimension")
 		highlight_dimension_label(2)
 	elif(menux == 1 and menuy == 1):
 		console_label.text = default_text.insert(9,"vY--")
+		update_tool_tip_label("[!]_DECREASE_y_dimension")
 		highlight_dimension_label(2)
 	elif(menux == 0 and menuy == 2):
 		console_label.text = default_text.insert(9,"save")
+		update_tool_tip_label("[!]_save_configuration")
 	elif(menux == 1 and menuy == 2):
 		console_label.text = default_text.insert(9,"exit")
+		update_tool_tip_label("[!]_exit_difficulty_menu")
 
 func update_dimensions_labels():
 	var hx_bracket: String = "[]"
@@ -177,12 +183,14 @@ func update_base(pConfigure: int):
 	if(current_base == 0):
 		b_16_panel.visible = true
 		b_36_panel.visible = false
+		update_tool_tip_label("[!]_BASE16_complexity")
 	else:
 		b_16_panel.visible = false
 		b_36_panel.visible = true
+		update_tool_tip_label("[!]_BASE32_complexity")
 
-func update_tool_tip_label():
-	pass
+func update_tool_tip_label(pToolTip: String):
+	tool_tip_label.text = pToolTip
 
 func menu_traversal(pMenuX: int = 0, pMenuY: int = 0):
 	prev_menux = menux
@@ -317,6 +325,7 @@ func _on_add_x_area_2d_mouse_entered() -> void:
 	menuy = 0
 	update_hover_highlight(menux, menuy)
 	highlight_dimension_label(1)
+	update_tool_tip_label("[!]_INCREASE_x_dimension")
 func _on_add_x_area_2d_mouse_exited() -> void:
 	pass
 func _on_add_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -335,6 +344,7 @@ func _on_min_x_area_2d_mouse_entered() -> void:
 	menuy = 1
 	update_hover_highlight(menux, menuy)
 	highlight_dimension_label(1)
+	update_tool_tip_label("[!]_DECREASE_x_dimension")
 func _on_min_x_area_2d_mouse_exited() -> void:
 	pass
 func _on_min_x_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -353,6 +363,7 @@ func _on_add_y_area_2d_mouse_entered() -> void:
 	menuy = 0
 	update_hover_highlight(menux, menuy)
 	highlight_dimension_label(2)
+	update_tool_tip_label("[!]_INCREASE_y_dimension")
 func _on_add_y_area_2d_mouse_exited() -> void:
 	pass
 func _on_add_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -371,6 +382,7 @@ func _on_min_y_area_2d_mouse_entered() -> void:
 	menuy = 1
 	update_hover_highlight(menux, menuy)
 	highlight_dimension_label(2)
+	update_tool_tip_label("[!]_DECREASE_y_dimension")
 func _on_min_y_area_2d_mouse_exited() -> void:
 	pass
 func _on_min_y_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -388,6 +400,7 @@ func _on_save_area_2d_mouse_entered() -> void:
 	menux = 0
 	menuy = 2
 	update_hover_highlight(menux, menuy)
+	update_tool_tip_label("[!]_save_configuration")
 func _on_save_area_2d_mouse_exited() -> void:
 	pass
 func _on_save_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -405,6 +418,7 @@ func _on_exit_area_2d_mouse_entered() -> void:
 	menux = 1
 	menuy = 2
 	update_hover_highlight(menux, menuy)
+	update_tool_tip_label("[!]_exit_difficulty_menu")
 func _on_exit_area_2d_mouse_exited() -> void:
 	pass
 func _on_exit_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -419,6 +433,7 @@ func _on_base_16_area_2d_mouse_entered() -> void:
 	play_directional_key_sound()
 	b_16_panel.visible = true
 	b_36_panel.visible = false
+	update_tool_tip_label("[!]_BASE16_complexity")
 func _on_base_16_area_2d_mouse_exited() -> void:
 	b_16_panel.visible = false
 func _on_base_16_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -433,6 +448,7 @@ func _on_base_36_area_2d_mouse_entered() -> void:
 	play_directional_key_sound()
 	b_16_panel.visible = false
 	b_36_panel.visible = true
+	update_tool_tip_label("[!]_BASE32_complexity")
 func _on_base_36_area_2d_mouse_exited() -> void:
 	b_36_panel.visible = false
 func _on_base_36_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
