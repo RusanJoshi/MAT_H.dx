@@ -268,10 +268,10 @@ func create_log(pString):
 
 func highlight_dimension_label(pLabel: int = 0):
 	if(pLabel == 1):
-		hx_label.modulate = Color.RED
+		hx_label.modulate = ConfigGame.base_highlight_color
 		vy_label.modulate = Color.WHITE
 	elif(pLabel == 2):
-		vy_label.modulate = Color.RED
+		vy_label.modulate = ConfigGame.base_highlight_color
 		hx_label.modulate = Color.WHITE
 	else:
 		hx_label.modulate = Color.WHITE
@@ -445,15 +445,17 @@ func _on_base_16_area_2d_input_event(viewport: Node, event: InputEvent, shape_id
 
 #BASE36
 func _on_base_36_area_2d_mouse_entered() -> void:
-	play_directional_key_sound()
-	b_16_panel.visible = false
-	b_36_panel.visible = true
-	update_tool_tip_label("[!]_BASE32_complexity")
+	if(base_unlocked):
+		play_directional_key_sound()
+		b_16_panel.visible = false
+		b_36_panel.visible = true
+		update_tool_tip_label("[!]_BASE32_complexity")
 func _on_base_36_area_2d_mouse_exited() -> void:
 	b_36_panel.visible = false
 func _on_base_36_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				play_confirmation_key_sound()
-				update_base(1)
+	if(base_unlocked):
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					play_confirmation_key_sound()
+					update_base(1)

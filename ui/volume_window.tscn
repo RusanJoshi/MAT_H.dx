@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3p6301xdxgv6"]
+
+[ext_resource type="Script" path="res://scripts/volume_window.gd" id="1_aok64"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="1_xtjm3"]
+[ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_gaxop"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cb2k2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e54gr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_abggb"]
+font = ExtResource("2_gaxop")
+font_size = 20
+
+[node name="VolumeWindow" type="Node2D"]
+z_index = 2
+script = ExtResource("1_aok64")
+
+[node name="VPASP" type="AudioStreamPlayer" parent="."]
+script = ExtResource("1_xtjm3")
+
+[node name="FauxBorder" type="Panel" parent="."]
+offset_left = 136.0
+offset_top = 245.0
+offset_right = 388.0
+offset_bottom = 497.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cb2k2")
+
+[node name="Background" type="Panel" parent="."]
+offset_left = 137.0
+offset_top = 246.0
+offset_right = 387.0
+offset_bottom = 496.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e54gr")
+
+[node name="TestText" type="Label" parent="."]
+offset_left = 214.0
+offset_top = 254.0
+offset_right = 316.0
+offset_bottom = 277.0
+text = "Test Text"
+label_settings = SubResource("LabelSettings_abggb")

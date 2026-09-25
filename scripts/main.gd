@@ -19,6 +19,7 @@ extends Node2D
 @onready var mini_menu_area_2d: Area2D = $MiniMenuArea2D
 var current_pop_up_window: Node2D
 var unlocks_window: PackedScene = preload("res://ui/unlocks_window.tscn")
+var volume_window: PackedScene = preload("res://ui/volume_window.tscn")
 var difficulty_window: PackedScene = preload("res://ui/difficulty_window.tscn")
 @onready var crt_shader: CanvasLayer = %CRTShader
 
@@ -37,7 +38,9 @@ func _ready():
 	#UI
 	UIManager.global_toggle_pop_up_shade.connect(toggle_pop_up_shade)
 	UIManager.open_unlocks_window.connect(open_unlocks_window)
+	UIManager.open_volume_window.connect(open_volume_window)
 	UIManager.open_difficulty_window.connect(open_difficulty_window)
+	#TODO Toggle Detection Meter
 	UIManager.toggle_crt_effect.connect(toggle_crt_effect)
 	
 	#END GAME
@@ -77,8 +80,12 @@ func toggle_pop_up_shade():
 	#mouse_blocker_area_2d.visible = !mouse_blocker_area_2d.visible
 
 func open_unlocks_window():
-	var unlocks_window_cartridge = unlocks_window.instantiate()
-	add_child(unlocks_window_cartridge)
+	pass
+
+func open_volume_window():
+	var volume_window_cartridge = volume_window.instantiate()
+	current_pop_up_window = volume_window_cartridge
+	add_child(current_pop_up_window)
 
 func open_difficulty_window():
 	var difficulty_window_cartridge = difficulty_window.instantiate()

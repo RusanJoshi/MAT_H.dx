@@ -232,6 +232,8 @@ func secrets_moption_target():
 
 func volume_moption_target():
 	print("\nVolume...")
+	UIManager.global_toggle_pop_up_shade.emit()
+	UIManager.open_volume_window.emit()
 func difficulty_moption_target():
 	print("\nDifficulty...")
 	UIManager.global_toggle_pop_up_shade.emit()

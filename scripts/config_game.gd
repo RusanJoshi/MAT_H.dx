@@ -17,9 +17,13 @@ var base_unlocked: bool = false
 var crt_shader_bool: bool = true
 var cell_highlight_color: Color = Color.DARK_SLATE_GRAY
 
-var default_focus_highlight_color: Color = Color8(100, 65, 35, 100)
+var default_focus_highlight_color: Color = Color8(100, 65, 35, 100) #changes main's focus highlight (over matrix and minimenu, comes into effect after a restart(why?)
 var win_focus_highlight_color: Color = Color8(34, 139, 34, 100)
 var lose_focus_highlight_color: Color = Color8(178, 34, 34, 100)
+var base_highlight_color: Color = Color.CRIMSON.darkened(0.25)
+
+#experimental
+var general_highlight_accent_color: Color = Color.DARK_SLATE_GRAY
 
 # Toggle CRT shader/ adjust intensity
 # Adjust game volume

@@ -23,6 +23,13 @@ signal kill_unlocks_window
 signal show_unlocks_window
 signal hide_unlocks_window
 
+#VOLUME WINDOW
+signal open_volume_window
+signal kill_volume_window
+signal show_volume_window
+signal hide_volume_window
+signal volume_window_self_destruct
+
 #DIFFICULTY WINDOW
 signal open_difficulty_window
 signal kill_difficulty_window
@@ -31,6 +38,6 @@ signal hide_difficulty_window
 signal difficulty_window_self_destruct
 
 #CRT TOGGLE
-#emit: minimenu.gd, crt_effect_moption_target()
+#emit: minimenu.gd -> crt_effect_moption_target()
 #connected: main.gd
 signal toggle_crt_effect
