@@ -22,6 +22,11 @@ var win_focus_highlight_color: Color = Color8(34, 139, 34, 100)
 var lose_focus_highlight_color: Color = Color8(178, 34, 34, 100)
 var base_highlight_color: Color = Color.CRIMSON.darkened(0.25)
 
+#VOLUME
+var master_volume_level: int = 4
+var keypress_volume_level: int = 2
+var jingle_volume_level: int = 2
+
 #experimental
 var general_highlight_accent_color: Color = Color.DARK_SLATE_GRAY
 

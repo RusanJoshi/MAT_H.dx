@@ -1,8 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3p6301xdxgv6"]
+[gd_scene load_steps=12 format=3 uid="uid://d3p6301xdxgv6"]
 
 [ext_resource type="Script" path="res://scripts/volume_window.gd" id="1_aok64"]
 [ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="1_xtjm3"]
 [ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="2_gaxop"]
+[ext_resource type="PackedScene" uid="uid://dtpjf23s47duk" path="res://volume_rocker.tscn" id="4_1speu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0sxlh"]
+bg_color = Color(0.8, 0.0313726, 0.254902, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g217c"]
+bg_color = Color(0.192157, 0.572549, 0.188235, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5yn4m"]
+bg_color = Color(0.203922, 0.341176, 0.803922, 0.392157)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cb2k2"]
 
@@ -13,12 +23,40 @@ bg_color = Color(0, 0, 0, 1)
 font = ExtResource("2_gaxop")
 font_size = 20
 
+[sub_resource type="LabelSettings" id="LabelSettings_nwy7i"]
+font = ExtResource("2_gaxop")
+font_size = 18
+
 [node name="VolumeWindow" type="Node2D"]
 z_index = 2
 script = ExtResource("1_aok64")
 
 [node name="VPASP" type="AudioStreamPlayer" parent="."]
 script = ExtResource("1_xtjm3")
+
+[node name="FauxBorderR" type="Panel" parent="."]
+offset_left = 135.0
+offset_top = 245.0
+offset_right = 387.0
+offset_bottom = 497.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0sxlh")
+
+[node name="FauxBorderG" type="Panel" parent="."]
+offset_left = 136.0
+offset_top = 244.0
+offset_right = 388.0
+offset_bottom = 496.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g217c")
+
+[node name="FauxBorderB" type="Panel" parent="."]
+offset_left = 136.0
+offset_top = 246.0
+offset_right = 388.0
+offset_bottom = 498.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5yn4m")
 
 [node name="FauxBorder" type="Panel" parent="."]
 offset_left = 136.0
@@ -33,12 +71,49 @@ offset_left = 137.0
 offset_top = 246.0
 offset_right = 387.0
 offset_bottom = 496.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e54gr")
 
-[node name="TestText" type="Label" parent="."]
-offset_left = 214.0
-offset_top = 254.0
-offset_right = 316.0
-offset_bottom = 277.0
-text = "Test Text"
+[node name="Header" type="Label" parent="."]
+offset_left = 138.0
+offset_top = 247.0
+offset_right = 273.0
+offset_bottom = 270.0
+text = "audio_output_set::..//
+sound_array:audio_set:
+"
 label_settings = SubResource("LabelSettings_abggb")
+
+[node name="MasterLabel" type="Label" parent="."]
+offset_left = 138.0
+offset_top = 307.0
+offset_right = 198.0
+offset_bottom = 327.0
+text = "master_vol()
+"
+label_settings = SubResource("LabelSettings_nwy7i")
+
+[node name="MVolumeRocker" parent="MasterLabel" instance=ExtResource("4_1speu")]
+position = Vector2(-1, 17)
+
+[node name="KeyPressLabel" type="Label" parent="."]
+offset_left = 138.0
+offset_top = 357.0
+offset_right = 210.0
+offset_bottom = 377.0
+text = "keypress_vol()"
+label_settings = SubResource("LabelSettings_nwy7i")
+
+[node name="KPVolumeRocker" parent="KeyPressLabel" instance=ExtResource("4_1speu")]
+position = Vector2(-1, 17)
+
+[node name="JinglesLabel" type="Label" parent="."]
+offset_left = 138.0
+offset_top = 407.0
+offset_right = 201.0
+offset_bottom = 427.0
+text = "jingles_vol()"
+label_settings = SubResource("LabelSettings_nwy7i")
+
+[node name="JVolumeRocker" parent="JinglesLabel" instance=ExtResource("4_1speu")]
+position = Vector2(-1, 17)

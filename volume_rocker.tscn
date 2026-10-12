@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtpjf23s47duk"]
+
+[ext_resource type="FontFile" uid="uid://dj3uy5ehse3ik" path="res://fonts/Perfect DOS VGA 437 Win.ttf" id="1_stmcj"]
+[ext_resource type="Script" path="res://scripts/volume_rocker.gd" id="1_t6ci5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p250s"]
+font = ExtResource("1_stmcj")
+font_size = 20
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_000v4"]
+size = Vector2(33, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5eouu"]
+size = Vector2(33, 16)
+
+[node name="VolumeRocker" type="Node2D"]
+script = ExtResource("1_t6ci5")
+
+[node name="RockerVisual" type="Label" parent="."]
+offset_right = 152.0
+offset_bottom = 19.0
+text = "[-][- - - -][+]"
+label_settings = SubResource("LabelSettings_p250s")
+vertical_alignment = 1
+
+[node name="IncreaseA2D" type="Area2D" parent="."]
+position = Vector2(151, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IncreaseA2D"]
+shape = SubResource("RectangleShape2D_000v4")
+metadata/_edit_lock_ = true
+
+[node name="DecreaseA2D" type="Area2D" parent="."]
+position = Vector2(17, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DecreaseA2D"]
+position = Vector2(-0.5, 0.75)
+shape = SubResource("RectangleShape2D_5eouu")
+metadata/_edit_lock_ = true
+
+[connection signal="input_event" from="IncreaseA2D" to="." method="_on_increase_a_2d_input_event"]
+[connection signal="mouse_entered" from="IncreaseA2D" to="." method="_on_increase_a_2d_mouse_entered"]
+[connection signal="mouse_exited" from="IncreaseA2D" to="." method="_on_increase_a_2d_mouse_exited"]
+[connection signal="input_event" from="DecreaseA2D" to="." method="_on_decrease_a_2d_input_event"]
+[connection signal="mouse_entered" from="DecreaseA2D" to="." method="_on_decrease_a_2d_mouse_entered"]
+[connection signal="mouse_exited" from="DecreaseA2D" to="." method="_on_decrease_a_2d_mouse_exited"]

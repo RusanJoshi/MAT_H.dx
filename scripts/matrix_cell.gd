@@ -66,9 +66,11 @@ func cell_hover(pHover: bool):
 		vpasp.play()
 		default_cell_stylebox.bg_color = ConfigGame.cell_highlight_color
 		default_label_settings.set_font_size(hover_font_size)
+		#default_label_settings.set_font_color(Color.DEEP_SKY_BLUE)
 	else:
 		default_cell_stylebox.bg_color = Color.BLACK
 		default_label_settings.set_font_size(default_font_size)
+		#default_label_settings.set_font_color(Color.WHITE)
 
 func lock_cell():
 	cell_locked = true
